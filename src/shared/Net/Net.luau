@@ -45,6 +45,29 @@ if RunService:IsServer() then
 		end
 	end)
 
+	-- Pipeline satu handler: validator -> handler (pcall). Mengembalikan status untuk uji fuzz.
+	Net.handlerErrors = 0 -- jumlah handler yang melempar error (harus tetap 0 saat fuzz)
+	local registry = {} -- [name] = { {validator, handler}, ... } (hanya untuk Net.inject)
+
+	local function dispatch(name: string, validator, handler, player: Player, ...): string
+		local okValidate, valid = pcall(validator, ...)
+		if not okValidate then
+			Net.handlerErrors += 1
+			warn(`[Net] validator {name} melempar error: {valid}`)
+			return "validator_error"
+		end
+		if not valid then
+			return "invalid"
+		end
+		local ok, err = pcall(handler, player, ...)
+		if not ok then
+			Net.handlerErrors += 1
+			warn(`[Net] handler {name} gagal: {err}`)
+			return "error"
+		end
+		return "ok"
+	end
+
 	function Net.on(name: string, validator: (...any) -> boolean, handler: (Player, ...any) -> ())
 		assert(type(validator) == "function", "Net.on('" .. name .. "') butuh validator")
 		local remote = folder:FindFirstChild(name)
@@ -53,18 +76,25 @@ if RunService:IsServer() then
 		local limiter = RateLimiter.new(Remotes.C2S[name], os.clock)
 		table.insert(limiters, limiter)
 		Net.handled[name] = true
+		registry[name] = registry[name] or {}
+		table.insert(registry[name], { validator = validator, handler = handler })
 		remote.OnServerEvent:Connect(function(player, ...)
 			if not limiter:allow(player.UserId) then
 				return
 			end
-			if not validator(...) then
-				return
-			end
-			local ok, err = pcall(handler, player, ...)
-			if not ok then
-				warn(`[Net] handler {name} gagal: {err}`)
-			end
+			dispatch(name, validator, handler, player, ...)
 		end)
+	end
+
+	-- HANYA Studio (uji fuzz): menjalankan semua handler terdaftar untuk remote tanpa batas laju.
+	-- Mengembalikan daftar status per handler: "ok" | "invalid" | "error" | "validator_error".
+	function Net.inject(name: string, player: Player, ...): { string }
+		assert(RunService:IsStudio(), "Net.inject hanya untuk Studio")
+		local results = {}
+		for _, entry in registry[name] or {} do
+			table.insert(results, dispatch(name, entry.validator, entry.handler, player, ...))
+		end
+		return results
 	end
 
 	function Net.fire(name: string, player: Player, ...)

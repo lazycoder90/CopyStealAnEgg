@@ -90,6 +90,13 @@ export type StarwhaleStatePayload = {
 	stardust: number?,
 	relayFixed: boolean?,
 	target: { number }?, -- posisi paus {x,y,z} (hanya untuk pemain yang memegang Star Compass)
+	puzzle: {
+		size: number,
+		tiles: { { { kind: string, rot: number } } },
+		source: { row: number, col: number },
+		target: { row: number, col: number },
+	}?, -- puzzle Star Relay (tanpa solusi)
+	oddPositions: { { number } }?, -- posisi telur aneh {x,y,z} khusus pemain ini (dirender klien)
 }
 
 export type NotifyKind = "info" | "error" | "success" | "admin"
@@ -167,6 +174,7 @@ Types.Names = {
 	PlotExpansionSign = "ExpansionSign", -- anak Plot: papan "Unlock: $1K"
 	PlotPenSign = "PenSign", -- anak Plot: papan upgrade pen
 	Bots = "Bots", -- folder bot uji di Workspace
+	ClientBud = "ClientBud", -- folder lokal klien untuk model Bud
 }
 
 -- Nama nest state.

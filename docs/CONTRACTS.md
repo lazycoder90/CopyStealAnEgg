@@ -67,3 +67,17 @@ Konstanta nama attribute/tag/folder SELALU dari `src/shared/Types.luau` (`Types.
 - Layout: `Layout.hubStalls = {trails, sell, fuse, mutation, basket, boardMoney, boardTrophy}` posisi kios hub (x,z). Pakai posisi ini; jangan tumpang tindih.
 - Klien: `ModalController`, `HUDController.registerButton`, `NotificationController.push`, `HatchRevealController` (kartu reveal), `Button/Panel/Modal`. Kios dibuka lewat `ProximityPromptService.PromptTriggered` di klien dengan nama prompt konstan di file Config milik fitur (contoh `Progression.trailShop.promptName`).
 - Aturan tes Studio: tutup suite berbot dengan `bot.removeAll`; setelah `wipe`/`simulateRejoin` tunggu >= 1.2 dtk; teleport lewat `TestBridge.teleport`; uji juga dengan JALAN sungguhan bila menyangkut peta.
+
+## Tambahan setelah Wave 3 (untuk Wave 4: event dunia)
+- `AnnouncementService.broadcast(segments)`, `.send(player, segments)`, `.text(str, color?)`, `.rarity(rarityIndex, name?)` (server; remote S2C `Announce` payload `AnnouncePayload`). Klien (AnnouncementController) dibuat agen DayNight.
+- Tipe payload event di `Types.luau`: `DayNightPayload`, `EggResetPayload`, `RaceStatePayload`, `StarwhaleStatePayload` (+ `puzzle`, `oddPositions`), `RacePodiumRow`, `AnnouncePayload`. Waktu dikirim sebagai SISA DETIK (klien tidak bisa membandingkan `Clock.now()` server).
+- `CarryService.addPickupGuard(name, fn(userId, entity) -> ok, msg)` menolak pickup telur dunia (dipakai Race).
+- `GrowthService.setGlobalMultiplier(name, v)` (malam = 30), `GrowthService.addMultiplierProvider`.
+- `EggSpawnService.resetAll()`; event `GameEvents.EggSpawned{zone,speciesId,rarity,grand,nestId}`; `Rarities.get(r).announce`.
+- `IncomeService.addBonus/addMultiplier`, `SpeedService.addMultiplier`, `HatchService.addLuckProvider`, `OfflineEarningsService.addCapMultiplier`, `CurrencyService` (fields: cash, trophies, stardust, speedBase).
+- Remote baru: `CollectOddEgg(index 1..3)`. Remote yang sudah ada dan boleh dipakai: `SubmitRelay` (rotasi grid 5x5 -> `Check.intGrid(5,5,0,3)`), `TradeStardust`, `ClaimCompanionStage`, S2C: `DayNight`, `EggReset`, `RaceState`, `StarwhaleState`, `Announce`, `Notify`.
+- Beberapa service boleh mendaftarkan handler tambahan pada remote yang sama (`Net.on("ClientReady", ...)`); semua handler dijalankan.
+- `Layout.hubStalls`: trails, sell, fuse, mutation, basket, tilly (-> Astronomer Tilly / Signal Tower), boardMoney, boardTrophy.
+- Mutasi: `Mutations.list.Moonlit` (x2.5, `source="night"`), `Mutations.moonlitChancePerNight`; `MutationLogic.add/canAdd/format`.
+- Data profil terkait: `data.companion = {stage, progress, claimed}`, `data.starwhale = {relayFixed, eggsFoundThisVisit, lastVisitId}`, `data.gear = {pan, trap, compass}`, `data.raceBest = {}`, `data.trophies`, `data.stardust`, `data.boosts`.
+- Setelah mengubah data egg (mutasi, dll.) panggil `GrowthService.ensureModel(userId, uid)` agar atribut model ikut diperbarui.

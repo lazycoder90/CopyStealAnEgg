@@ -39,6 +39,7 @@ return {
 		-- Event
 		SubmitRelay = 3,
 		TradeStardust = 3,
+		CollectOddEgg = 5,
 		ClaimCompanionStage = 3,
 		-- Monetisasi
 		RequestSkipGrowth = 2,

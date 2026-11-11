@@ -85,17 +85,24 @@ local function build(id: string, slot: string, def)
 		AnchorPoint = Vector2.new(1, 0),
 		Position = UDim2.new(1, 6, 0, -6),
 		Size = UDim2.fromOffset(24, 24),
+		AutomaticSize = Enum.AutomaticSize.X, -- teks panjang ("OPEN 4:52") melebarkan badge
 		BackgroundColor3 = Theme.Colors.Brick,
 		Visible = false,
 		ZIndex = 5,
 		Parent = button,
 		[UIBuilder.Children] = {
 			UIBuilder.create("UICorner", { CornerRadius = UDim.new(0.5, 0) }),
+			UIBuilder.create("UISizeConstraint", { MinSize = Vector2.new(24, 24) }),
+			UIBuilder.create("UIPadding", {
+				PaddingLeft = UDim.new(0, 6),
+				PaddingRight = UDim.new(0, 6),
+			}),
 			UIBuilder.create("UIStroke", { Thickness = 2, Color = Theme.Colors.White }),
 		},
 	})
 	local label = UIBuilder.create("TextLabel", {
-		Size = UDim2.fromScale(1, 1),
+		Size = UDim2.fromOffset(0, 24),
+		AutomaticSize = Enum.AutomaticSize.X,
 		BackgroundTransparency = 1,
 		Font = Theme.Fonts.Title,
 		TextSize = 14,

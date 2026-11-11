@@ -21,7 +21,7 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - [x] Wave 1 / Fase 1: core loop (peta, telur, carry, place, hatch, pet, income, klien). Studio: Boot 17, CoreLoop 50, Life 27, Death 9 = 103 lulus; Lune 942 lulus.
 - [x] Wave 2 / Fase 2+3: Speed/Wheel/Upgrade/Trail/AntiExploit, Guardian/Zone/Tutorial/Impact, Steal/Defense/Bots. Studio: 367 pemeriksaan lulus (Boot 17, CoreLoop 50, Life 27, Death 9, Progression 62, Guardian 46, Tutorial 35, Steal 57, Defense 64); Lune 1471.
 - [x] Wave 3 / Fase 4: Sell, Inventory, Growing Eggs, Index, Fuse, Mutation NPC, Offline, Free Basket, Friend Boost, Leaderboard. Studio total 609 pemeriksaan lulus (17 suite); Lune 1751.
-- [ ] Wave 4 / Fase 5
+- [x] Wave 4 / Fase 5: Day/Night + Moonlit, Egg Reset + Announcement, Bud (Companion), Dash Derby, Starwhale (Relay puzzle, Compass, odd eggs, pods, trade). Studio total ~903 pemeriksaan (24 suite) lulus; Lune 6938.
 - [ ] Wave 5 / Fase 6+7
 - [ ] Review kode paralel + soak test
 - [ ] Laporan akhir
@@ -44,3 +44,9 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - Rumus hadiah speed Index: `round(5 + (slot-1) + recSpeed*0.0005*slot)` (naik monoton; docs/ECONOMY.md rec #2 disesuaikan agar zona awal tidak datar).
 - Leaderboard memakai OrderedDataStore bila tersedia, fallback ke pemain di server (Studio tanpa API).
 - Daftar suite Studio: Boot, CoreLoop, Life, Death, Progression, Sell, Inventory, Offline, FreeBasket, Leaderboard, Index, Fuse, Mutation, Guardian, Tutorial, Steal, Defense. Tes yang mengubah data harus mengembalikannya (invarian berkala mencetak error merah jika ada nilai tidak sah).
+
+## Catatan Wave 4
+- Fuzz remote (`Fuzz` suite, `Net.inject` hanya Studio): ~1500 panggilan berbahaya, 0 error, state stabil tidak berubah.
+- Suite baru: Fuzz, DayNight, EggReset, Companion, Race (~60 dtk), Starwhale. Peringatan `[AntiExploit] ... dikembalikan` di Output berasal dari tes Progression yang sengaja teleport 300 stud tanpa grace (wajar).
+- Pola bug tes yang berulang: helper `call` yang memakai `result.ok and result.result or nil` mengubah hasil `false` menjadi `nil`. Jangan pakai pola itu untuk hasil boolean.
+- Badge HUD kini auto-lebar untuk teks panjang ("OPEN 4:52").

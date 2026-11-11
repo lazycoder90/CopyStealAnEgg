@@ -37,6 +37,7 @@ local CarryService = {}
 local carries = {} -- [userId] = { kind, maid, visual = { model, weld }, ... }
 local kinds = {}
 local immunity = {} -- [userId] = os.clock() batas kebal pickup
+local pickupGuards = {} -- [name] = function(userId, entity) -> (boolean, string?) ; false = pickup ditolak
 
 function CarryService.registerKind(name: string, impl)
 	kinds[name] = impl
@@ -173,6 +174,11 @@ function CarryService.isCarrying(userId: number): boolean
 	return carries[userId] ~= nil
 end
 
+-- Service lain (mis. Race) bisa menolak pickup telur dunia: fn(userId, entity) -> ok, pesan.
+function CarryService.addPickupGuard(name: string, fn: (number, any) -> (boolean, string?))
+	pickupGuards[name] = fn
+end
+
 function CarryService.setPickupImmunity(userId: number, seconds: number)
 	immunity[userId] = os.clock() + seconds
 end
@@ -294,6 +300,12 @@ function CarryService.tryPickupWorld(userId: number, eggUid: string): (boolean, 
 	local entity = EggSpawnService.getEntity(eggUid)
 	if not entity then
 		return false, "That egg is gone."
+	end
+	for _, guard in pickupGuards do
+		local allowed, message = guard(userId, entity)
+		if not allowed then
+			return false, message or "You can't pick up this egg right now."
+		end
 	end
 	local distance = (root.Position - EggSpawnService.entityPosition(entity)).Magnitude
 	if distance > Eggs.grabMaxDistance + Eggs.grabValidateSlack then
