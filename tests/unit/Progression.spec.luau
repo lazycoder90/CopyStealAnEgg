@@ -39,7 +39,7 @@ return function(t)
 	t.eq(P.maxEquipSlots, 14, "maxEquipSlots")
 
 	t.eq(P.plotExpansion.price, 1000, "plot $1K")
-	t.eq(P.wheel.maxLevel, 40, "wheel max")
+	t.eq(P.wheel.maxLevel, 30, "wheel max")
 	t.eq(P.eggSlotsFor(1, 0), 4, "slot telur L1")
 	t.eq(P.eggSlotsFor(1, 1), 5, "slot telur L1 + ekspansi")
 	t.eq(P.eggSlotsFor(11, 1), 15, "slot telur L11 + ekspansi")
@@ -59,9 +59,12 @@ return function(t)
 			ordered = false
 		end
 		prevMult, prevCash = tr.mult, tr.cashPrice
+		t.truthy(#tr.color == 3, "trail color " .. tr.id)
 	end
 	t.truthy(ordered, "trail terurut")
 	t.eq(P.trails[11].mult, 20, "Prismatic Crown x20")
+
+	t.eq(P.trailShop.promptName, "TrailsShopPrompt", "nama prompt kios")
 
 	-- Semua angka config hingga
 	for _, c in Creatures.list do

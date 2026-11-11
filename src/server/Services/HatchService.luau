@@ -58,6 +58,9 @@ function HatchService.hatch(userId: number, eggUid: string): (boolean, any)
 	if not egg or egg.loc ~= "placed" then
 		return false, "Egg not found."
 	end
+	if GrowthService.isFrozen(userId, eggUid) then
+		return false, "Egg not found."
+	end
 	if egg.progress < egg.growTotal then
 		return false, "This egg is not ready yet."
 	end

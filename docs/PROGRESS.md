@@ -19,7 +19,7 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - [x] Langkah 0: git, remote, Rojo live sync
 - [x] Wave 0: infrastruktur kontrak (commit b14ceb6)
 - [x] Wave 1 / Fase 1: core loop (peta, telur, carry, place, hatch, pet, income, klien). Studio: Boot 17, CoreLoop 50, Life 27, Death 9 = 103 lulus; Lune 942 lulus.
-- [ ] Wave 2 / Fase 2+3
+- [x] Wave 2 / Fase 2+3: Speed/Wheel/Upgrade/Trail/AntiExploit, Guardian/Zone/Tutorial/Impact, Steal/Defense/Bots. Studio: 367 pemeriksaan lulus (Boot 17, CoreLoop 50, Life 27, Death 9, Progression 62, Guardian 46, Tutorial 35, Steal 57, Defense 64); Lune 1471.
 - [ ] Wave 3 / Fase 4
 - [ ] Wave 4 / Fase 5
 - [ ] Wave 5 / Fase 6+7
@@ -31,3 +31,10 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - Pemindahan ke Coop saat spawn memakai pengecekan berulang (engine menaruh karakter di SpawnLocation sesaat setelah CharacterAdded).
 - Tes Studio yang memindahkan pemain harus menunggu >= 1.2 detik setelah wipe/rejoin.
 - Cara menjalankan tes: `ServerStorage.TestBridge:Invoke("test.run", "<Boot|CoreLoop|Life|Death>")` setelah Play.
+
+## Catatan Wave 2
+- BUG NYATA ditemukan lewat jalan sungguhan: celah lantai 30 stud antara hub (z<=120) dan lane (z>=150). Diperbaiki: `Layout.hubZMax = 150`. Tes teleport tidak menangkapnya; gunakan `character_navigation` untuk uji jalan.
+- AntiExploit aktif: teleport uji harus lewat `TestBridge.teleport` (memberi grace). Tool navigasi MCP dengan speed > 1 memicu rubber-band (wajar).
+- `EggSpawnService.takeEgg` kini tahan terhadap model telur yang sudah hancur.
+- Daftar suite Studio: Boot, CoreLoop, Life, Death, Progression, Guardian, Tutorial, Steal (~50 dtk), Defense (~45 dtk). Selalu `bot.removeAll` setelah suite berbot.
+- docs/ECONOMY.md rec #2 (hadiah speed Index) dan #3 diterapkan di Wave 3 / sudah (wheel maxLevel 30).

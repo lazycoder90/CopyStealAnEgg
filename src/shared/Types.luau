@@ -54,6 +54,18 @@ export type HatchRevealPayload = {
 	isNew: boolean,
 }
 
+export type CaughtPayload = { knock: Vector3, zone: number? } -- knock = arah * kekuatan (klien menerapkan)
+export type BonkedPayload = { knock: Vector3 }
+export type TrappedPayload = { seconds: number }
+export type StealAlertPayload = {
+	thiefUserId: number,
+	thiefName: string,
+	eggUid: string,
+	speciesId: string,
+	name: string,
+}
+export type GuardianAlertPayload = { zone: number, guardianId: string }
+
 export type NotifyKind = "info" | "error" | "success" | "admin"
 
 -- Nama attribute pada Instance.
@@ -77,6 +89,16 @@ Types.Attr = {
 	Gender = "Gender",
 	HatchTime = "HatchTime",
 	IsGrand = "IsGrand",
+	-- Wave 2
+	ShieldUntil = "ShieldUntil", -- Plot: Clock.now() saat Shell Shield berakhir (0 = tidak aktif)
+	StealAlert = "StealAlert", -- Plot: true saat ada yang mencuri (tanda "!")
+	GuardianId = "GuardianId",
+	GuardianState = "GuardianState", -- Sleep | Alert | Chase | Return
+	TrapOwner = "TrapOwner",
+	Carried = "Carried", -- Model telur placed yang sedang dibawa pencuri
+	PenLevel = "PenLevel", -- Plot: level pen (visual pagar)
+	WheelGain = "WheelGain", -- Model roda: speed per step saat ini
+	WheelLevel = "WheelLevel",
 }
 
 -- Nama tag CollectionService.
@@ -87,6 +109,9 @@ Types.Tags = {
 	Coop = "NB_Coop",
 	HearthLine = "NB_HearthLine",
 	SpawnPad = "NB_SpawnPad",
+	Guardian = "NB_Guardian",
+	Trap = "NB_Trap",
+	Shield = "NB_Shield",
 }
 
 -- Nama folder/Instance penting di Workspace dan ReplicatedStorage.
@@ -105,6 +130,10 @@ Types.Names = {
 	HatchPrompt = "HatchPrompt",
 	StealPrompt = "StealPrompt",
 	TestBridge = "TestBridge",
+	PlotWheel = "Wheel", -- anak Plot: model Sprint Wheel
+	PlotExpansionSign = "ExpansionSign", -- anak Plot: papan "Unlock: $1K"
+	PlotPenSign = "PenSign", -- anak Plot: papan upgrade pen
+	Bots = "Bots", -- folder bot uji di Workspace
 }
 
 -- Nama nest state.

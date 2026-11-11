@@ -47,4 +47,16 @@ return function(t)
 	t.eq(v("bad id", 5), false, "args elemen salah")
 	t.eq(Check.args()(), true, "args kosong ok")
 	t.eq(Check.args()(1), false, "args kosong tolak ekstra")
+
+	-- uidList
+	local list = Check.uidList(3)
+	t.eq(list({ "a1", "b2" }), true, "uidList valid")
+	t.eq(list({ "a1", "a1" }), false, "uidList duplikat ditolak")
+	t.eq(list({}), false, "uidList kosong ditolak")
+	t.eq(list({ "a", "b", "c", "d" }), false, "uidList terlalu panjang")
+	t.eq(list({ "a", [3] = "c" }), false, "uidList berlubang ditolak")
+	t.eq(list({ a = "x" }), false, "uidList non-array ditolak")
+	t.eq(list({ "bad id!" }), false, "uidList isi tidak valid")
+	t.eq(list("abc"), false, "uidList bukan tabel")
+	t.eq(list({ 1, 2 }), false, "uidList isi bukan string")
 end

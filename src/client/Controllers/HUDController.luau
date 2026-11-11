@@ -180,13 +180,22 @@ function HUDController.Start()
 	income.Parent = bottom
 
 	local function refresh()
-		speed.Text = "Speed " .. NumberFormat.fmt(StateController.get("speedBase") or 0)
+		local effective = StateController.get("speedEffective")
+			or StateController.get("speedBase")
+			or 0
+		speed.Text = "Speed " .. NumberFormat.fmt(effective)
 		cash.Text = NumberFormat.fmtMoney(StateController.get("cash") or 0)
 		income.Text = NumberFormat.fmtRate(StateController.get("lastIncomePerSec") or 0)
 	end
 
 	StateController.changed:Connect(function(path)
-		if path == "*" or path == "cash" or path == "speedBase" or path == "lastIncomePerSec" then
+		if
+			path == "*"
+			or path == "cash"
+			or path == "speedBase"
+			or path == "speedEffective"
+			or path == "lastIncomePerSec"
+		then
 			refresh()
 		end
 		HUDController.refreshBadges()

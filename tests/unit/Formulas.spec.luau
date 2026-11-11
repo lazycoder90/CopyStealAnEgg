@@ -26,8 +26,9 @@ return function(t)
 	t.eq(F.wheelGainPerStep(3), 6, "gain L3")
 	t.eq(F.wheelGainPerStep(5), 19, "gain L5")
 	t.near(F.wheelGainPerStep(14), 2900, 150, "gain L14 ~2.9K")
-	t.eq(F.wheelUpgradePrice(1), 500, "price L1")
-	t.eq(F.wheelUpgradePrice(5), 40500, "price L5")
+	t.eq(F.wheelUpgradePrice(1), 1500, "price L1")
+	t.near(F.wheelUpgradePrice(2), 8250, 0.001, "price L2")
+	t.near(F.wheelUpgradePrice(5), 1372593.75, 0.01, "price L5")
 
 	-- Offline: 1 jam income per hari offline
 	t.eq(F.offlinePerDay(100), 360000, "offline/hari")

@@ -181,9 +181,20 @@ function EggSpawnService.entityPosition(entity): Vector3
 end
 
 -- Mengambil telur untuk dibawa. Hanya state Occupied/Dropped. Model TIDAK dipindah (CarryService yang mengurus).
+-- Model telur masih utuh? (bisa ikut hancur bersama karakter pembawa yang dihapus paksa)
+local function isIntact(entity): boolean
+	local model = entity.model
+	return model ~= nil and model.Parent ~= nil and model.PrimaryPart ~= nil
+end
+
 function EggSpawnService.takeEgg(uid: string)
 	local entity = entities[uid]
 	if not entity or (entity.state ~= NestState.Occupied and entity.state ~= NestState.Dropped) then
+		return nil
+	end
+	if not isIntact(entity) then
+		-- Entity rusak: buang dan biarkan sarangnya respawn, jangan sampai crash.
+		EggSpawnService.destroyEntity(entity)
 		return nil
 	end
 	entity.state = NestState.Carried

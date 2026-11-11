@@ -5,7 +5,7 @@
 local Layout = {}
 
 Layout.hubZMin = -320
-Layout.hubZMax = 120 -- Hearth Line di sini
+Layout.hubZMax = 150 -- lantai hub berlanjut sampai awal lane (tanpa celah); Hearth Line di z = hearthLineZ
 Layout.hubHalfWidth = 420
 
 Layout.hearthLineZ = 120

@@ -32,6 +32,7 @@ local GrowthService = {}
 GrowthService.onHatchRequested = Signal.new() -- (player, eggUid)
 
 local models = {} -- [userId] = { [eggUid] = Model }
+local frozen = {} -- [userId] = { [eggUid] = true } telur yang sedang dibawa pencuri: tidak tumbuh, tidak bisa di-hatch
 local globalMultipliers = {} -- [name] = number (mis. night = 30)
 local providers = {} -- [name] = function(userId) -> number (pengali)
 
@@ -56,6 +57,16 @@ function GrowthService.multiplier(userId: number): number
 		m *= fn(userId)
 	end
 	return m
+end
+
+-- Dibekukan selama dicuri: berhenti tumbuh dan tak bisa di-hatch. Model-nya dihapus oleh pemanggil.
+function GrowthService.setFrozen(userId: number, uid: string, value: boolean)
+	frozen[userId] = frozen[userId] or {}
+	frozen[userId][uid] = if value then true else nil
+end
+
+function GrowthService.isFrozen(userId: number, uid: string): boolean
+	return frozen[userId] ~= nil and frozen[userId][uid] == true
 end
 
 function GrowthService.getModel(userId: number, uid: string): Model?
@@ -146,7 +157,11 @@ local function tick(dt: number)
 		local userId, data = entry.userId, entry.data
 		local mult
 		for uid, egg in data.eggs do
-			if egg.loc == "placed" and not isReady(egg) then
+			if
+				egg.loc == "placed"
+				and not isReady(egg)
+				and not GrowthService.isFrozen(userId, uid)
+			then
 				mult = mult or GrowthService.multiplier(userId)
 				egg.progress = math.min(egg.growTotal, egg.progress + dt * mult)
 				local model = GrowthService.getModel(userId, uid)
@@ -168,6 +183,7 @@ function GrowthService.Init()
 		end
 	end)
 	PlayerLifecycle.onLeaving("GrowthService", 50, function(ctx)
+		frozen[ctx.userId] = nil
 		local bucket = models[ctx.userId]
 		if bucket then
 			for _, model in bucket do
@@ -191,6 +207,7 @@ function GrowthService.Init()
 				end
 				if
 					not GrowthService.getModel(entry.userId, uid)
+					and not GrowthService.isFrozen(entry.userId, uid)
 					and PlotService.getPlot(entry.userId)
 				then
 					table.insert(out, `egg {uid} placed tanpa model`)

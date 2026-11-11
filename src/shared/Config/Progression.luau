@@ -9,6 +9,7 @@ export type Trail = {
 	mult: number,
 	cashPrice: number,
 	robuxPrice: number, -- 0 = tidak dijual dengan Robux
+	color: { number }, -- warna efek Trail (RGB 0..255)
 }
 
 local Progression = {}
@@ -48,7 +49,10 @@ Progression.maxEquipSlots = 14
 Progression.plotExpansion = { price = 1000, extraEggSlots = 1 }
 
 -- Rumus gain/harga ada di Formulas.
-Progression.wheel = { maxLevel = 40, stepsPerSecond = 3 }
+Progression.wheel = { maxLevel = 30, stepsPerSecond = 3 }
+
+-- Kios Trail di hub: nama prompt dipakai klien untuk membuka toko (tanpa remote).
+Progression.trailShop = { promptName = "TrailsShopPrompt", x = -60, y = 0, z = 95 }
 
 Progression.trails = {
 	{
@@ -58,6 +62,7 @@ Progression.trails = {
 		mult = 1.25,
 		cashPrice = 2e3,
 		robuxPrice = 0,
+		color = { 200, 184, 150 },
 	},
 	{
 		id = "leaf_swirl",
@@ -66,6 +71,7 @@ Progression.trails = {
 		mult = 1.5,
 		cashPrice = 40e3,
 		robuxPrice = 0,
+		color = { 107, 214, 107 },
 	},
 	{
 		id = "bubble_stream",
@@ -74,6 +80,7 @@ Progression.trails = {
 		mult = 2,
 		cashPrice = 600e3,
 		robuxPrice = 0,
+		color = { 79, 163, 255 },
 	},
 	{
 		id = "spark_ribbon",
@@ -82,6 +89,7 @@ Progression.trails = {
 		mult = 2.75,
 		cashPrice = 5e6,
 		robuxPrice = 49,
+		color = { 194, 91, 255 },
 	},
 	{
 		id = "sunflare",
@@ -90,6 +98,7 @@ Progression.trails = {
 		mult = 3.5,
 		cashPrice = 30e6,
 		robuxPrice = 79,
+		color = { 255, 196, 61 },
 	},
 	{
 		id = "ember_comet",
@@ -98,6 +107,7 @@ Progression.trails = {
 		mult = 4,
 		cashPrice = 750e6,
 		robuxPrice = 119,
+		color = { 255, 75, 75 },
 	},
 	{
 		id = "astral_wake",
@@ -106,6 +116,7 @@ Progression.trails = {
 		mult = 5,
 		cashPrice = 20e9,
 		robuxPrice = 199,
+		color = { 122, 92, 255 },
 	},
 	{
 		id = "void_glitch",
@@ -114,6 +125,7 @@ Progression.trails = {
 		mult = 7,
 		cashPrice = 500e9,
 		robuxPrice = 349,
+		color = { 40, 200, 220 },
 	},
 	{
 		id = "timeless_bloom",
@@ -122,6 +134,7 @@ Progression.trails = {
 		mult = 10,
 		cashPrice = 12.5e12,
 		robuxPrice = 499,
+		color = { 255, 138, 216 },
 	},
 	{
 		id = "primordial_prism",
@@ -130,6 +143,7 @@ Progression.trails = {
 		mult = 14,
 		cashPrice = 250e12,
 		robuxPrice = 799,
+		color = { 255, 255, 255 },
 	},
 	{
 		id = "prismatic_crown",
@@ -138,6 +152,7 @@ Progression.trails = {
 		mult = 20,
 		cashPrice = 5e15,
 		robuxPrice = 1100,
+		color = { 255, 240, 170 },
 	},
 } :: { Trail }
 

@@ -65,4 +65,11 @@ return function(t)
 		end
 	end
 	t.truthy(not overlap, "plot tidak tumpang tindih")
+
+	-- Tidak ada celah lantai antara hub dan lane, dan Hearth Line berada di dalam hub
+	t.truthy(Layout.hubZMax >= Layout.laneStartZ, "lantai hub menyambung ke lane")
+	t.truthy(
+		Layout.hearthLineZ < Layout.hubZMax and Layout.hearthLineZ > Layout.hubZMin,
+		"Hearth Line di dalam hub"
+	)
 end

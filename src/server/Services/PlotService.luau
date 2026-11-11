@@ -13,6 +13,7 @@ local Maid = require(Shared.Util.Maid)
 local Systems = script.Parent.Parent.Systems
 local PlayerLifecycle = require(Systems.PlayerLifecycle)
 local Actors = require(Systems.Actors)
+local AntiExploit = require(script.Parent.AntiExploit)
 local TestBridge = require(Systems.TestBridge)
 
 local Names, Attr = Types.Names, Types.Attr
@@ -115,6 +116,7 @@ function PlotService.teleportToPlot(userId: number, onlyIfFar: boolean?)
 	if onlyIfFar and (root.Position - spawn.Position).Magnitude <= 30 then
 		return
 	end
+	AntiExploit.grace(userId, 2, "plot_spawn")
 	character:PivotTo(spawn.CFrame * CFrame.new(0, 3, 0))
 end
 

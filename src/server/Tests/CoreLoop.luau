@@ -29,9 +29,7 @@ return function(T)
 	local userId = T.userId
 
 	local function teleport(pos: Vector3)
-		local root = Actors.getRoot(userId)
-		root.CFrame = CFrame.new(pos + Vector3.new(0, 4, 0))
-		root.AssemblyLinearVelocity = Vector3.zero
+		require(Server.Systems.TestBridge).teleport(userId, pos + Vector3.new(0, 4, 0))
 		T.wait(0.15)
 	end
 	local function grabNearest(zone: number?)

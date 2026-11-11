@@ -23,6 +23,19 @@ function TestBridge.register(name: string, fn: (...any) -> any)
 	handlers[name] = fn
 end
 
+-- Teleport sah untuk uji: memberi grace anti-exploit lebih dulu agar tidak di-rubber-band.
+function TestBridge.teleport(userId: number, position: Vector3): boolean
+	local AntiExploit = require(script.Parent.Parent.Services.AntiExploit)
+	local root = require(script.Parent.Actors).getRoot(userId)
+	if not root then
+		return false
+	end
+	AntiExploit.grace(userId, 2.5, "test_teleport")
+	root.CFrame = CFrame.new(position)
+	root.AssemblyLinearVelocity = Vector3.zero
+	return true
+end
+
 function TestBridge.getPlayer(): Player?
 	return Players:GetPlayers()[1]
 end
@@ -162,6 +175,9 @@ function TestBridge.Init()
 	local InvariantChecker = require(script.Parent.InvariantChecker)
 	local testsFolder = Server:FindFirstChild("Tests")
 
+	TestBridge.register("teleport", function(userId, x, y, z)
+		return TestBridge.teleport(userId, Vector3.new(x, y, z))
+	end)
 	TestBridge.register("ping", function()
 		return "pong"
 	end)

@@ -341,7 +341,7 @@ function CarryService.Init()
 		if not state then
 			return nil
 		end
-		return { kind = state.kind, eggUid = state.entity and state.entity.uid }
+		return { kind = state.kind, eggUid = state.eggUid or (state.entity and state.entity.uid) }
 	end)
 end
 

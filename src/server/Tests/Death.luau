@@ -38,7 +38,10 @@ return function(T)
 			end
 		end
 	end
-	root.CFrame = CFrame.new(EggSpawnService.entityPosition(best) + Vector3.new(4, 4, 0))
+	require(Server.Systems.TestBridge).teleport(
+		userId,
+		EggSpawnService.entityPosition(best) + Vector3.new(4, 4, 0)
+	)
 	T.wait(0.2)
 	local ok = CarryService.tryPickupWorld(userId, best.uid)
 	T.check("grab sebelum mati", ok == true)

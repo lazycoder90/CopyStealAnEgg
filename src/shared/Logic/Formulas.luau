@@ -31,7 +31,7 @@ end
 
 -- Harga naik dari level L ke L+1.
 function Formulas.wheelUpgradePrice(level: number): number
-	return 500 * 3 ^ (level - 1)
+	return 1500 * 5.5 ^ (level - 1)
 end
 
 -- Penghasilan offline: "per hari offline" = 1 jam income online.

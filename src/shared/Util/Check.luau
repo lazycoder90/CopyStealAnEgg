@@ -58,6 +58,31 @@ function Check.vec3(v: any): boolean
 	return Check.finite(vec.X) and Check.finite(vec.Y) and Check.finite(vec.Z)
 end
 
+-- Array murni (indeks 1..n berurutan) berisi uid unik, panjang 1..maxLen. Dipakai Sell/Fuse.
+function Check.uidList(maxLen: number): Validator
+	return function(v)
+		if type(v) ~= "table" then
+			return false
+		end
+		local count = 0
+		for _ in v do
+			count += 1
+		end
+		if count < 1 or count > maxLen or #v ~= count then
+			return false
+		end
+		local seen = {}
+		for i = 1, count do
+			local item = v[i]
+			if not Check.uid(item) or seen[item] then
+				return false
+			end
+			seen[item] = true
+		end
+		return true
+	end
+end
+
 function Check.optional(validator: Validator): Validator
 	local wrapped: any = function(v)
 		return v == nil or validator(v)

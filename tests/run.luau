@@ -17,6 +17,9 @@ local specs = {
 	{ "FuseLogic", require("./unit/FuseLogic.spec") },
 	{ "PipePuzzle", require("./unit/PipePuzzle.spec") },
 	{ "NestLayout", require("./unit/NestLayout.spec") },
+	{ "AntiExploitMath", require("./unit/AntiExploitMath.spec") },
+	{ "GuardianChase", require("./unit/GuardianChase.spec") },
+	{ "PvpRules", require("./unit/PvpRules.spec") },
 }
 
 local failed, total = 0, 0
