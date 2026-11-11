@@ -1,0 +1,6 @@
+# Versi dipin saat setup. Jika `rokit install` gagal, jalankan `rokit add <tool>` untuk versi terbaru.
+[tools]
+rojo = "rojo-rbx/rojo@7.4.4"
+lune = "lune-org/lune@0.8.9"
+selene = "Kampfkarren/selene@0.27.1"
+stylua = "JohnnyMorganz/StyLua@0.20.0"

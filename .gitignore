@@ -1,0 +1,10 @@
+Packages/*
+ServerPackages/*
+!Packages/.gitkeep
+!ServerPackages/.gitkeep
+*.rbxl
+*.rbxlx
+*.lock
+.DS_Store
+build/
+.claude/

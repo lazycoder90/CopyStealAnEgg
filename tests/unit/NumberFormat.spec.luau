@@ -1,0 +1,25 @@
+local NF = require("../../src/shared/Logic/NumberFormat")
+
+return function(t)
+	t.eq(NF.fmt(0), "0", "0")
+	t.eq(NF.fmt(999), "999", "999")
+	t.eq(NF.fmt(1000), "1K", "1000")
+	t.eq(NF.fmt(1500), "1.5K", "1500")
+	t.eq(NF.fmt(12345), "12.3K", "12345")
+	t.eq(NF.fmt(123456), "123K", "123456")
+	t.eq(NF.fmt(999999), "1M", "rollover 999999")
+	t.eq(NF.fmt(1.5e15), "1.5Qa", "1.5Qa")
+	t.eq(NF.fmt(1e33), "1Dc", "1e33")
+	t.eq(NF.fmt(-2500), "-2.5K", "negatif")
+
+	t.eq(NF.fmtMoney(19765), "$19,765", "money koma")
+	t.eq(NF.fmtMoney(1000), "$1,000", "money 1000")
+	t.eq(NF.fmtMoney(123456), "$123,456", "money 6 digit")
+	t.eq(NF.fmtMoney(999), "$999", "money 3 digit")
+	t.eq(NF.fmtMoney(1.2e12), "$1.2T", "money T")
+	t.eq(NF.fmtRate(47000), "$47K/s", "rate")
+
+	t.eq(NF.fmtTime(13), "13s", "time s")
+	t.eq(NF.fmtTime(259), "4m 19s", "time m")
+	t.eq(NF.fmtTime(57600), "16h 0m", "time h")
+end
