@@ -44,6 +44,10 @@ return function(T)
 		return
 	end
 
+	-- Pemain harus muncul di Coop sendiri (hanya bermakna bila suite ini dijalankan sebelum tes yang memindahkan pemain).
+	local plotDistance = require(Server.Services.PlotService)
+	T.check("pemain punya Coop", plotDistance.getPlot(T.userId) ~= nil)
+
 	-- CurrencyService: tolak nilai buruk, terima nilai baik
 	local before = data.cash
 	T.check("add NaN ditolak", CurrencyService.add(T.userId, "cash", 0 / 0) == false)

@@ -24,6 +24,14 @@ Layout.plotColumns = 4
 Layout.plotSpacingX = 130
 Layout.plotRowZ = { -20, -150 }
 
+-- Posisi lokal (relatif pusat lantai plot) tempat pemain muncul, dan area yang tidak boleh dipakai telur.
+Layout.plotSpawnLocal = { x = 0, z = 24 }
+Layout.plotReserved = {
+	{ x = 0, z = 24, r = 8 }, -- titik spawn
+	{ x = -26, z = -26, r = 14 }, -- Sprint Wheel (Fase 2)
+}
+Layout.plotGateWidth = 16 -- celah pagar di sisi lane (+Z)
+
 function Layout.plotCenter(index: number): (number, number)
 	local col = (index - 1) % Layout.plotColumns
 	local row = (index - 1) // Layout.plotColumns

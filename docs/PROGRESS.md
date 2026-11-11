@@ -17,11 +17,17 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 ## Checklist
 - [x] Fase 0: fondasi (commit b399424)
 - [x] Langkah 0: git, remote, Rojo live sync
-- [ ] Wave 0: infrastruktur kontrak (Types, Check, Maid, RNG, Net validator, Clock.now, PlayerLifecycle, CurrencyService, DataService virtual, TestBridge, InvariantChecker, autoloader)
-- [ ] Wave 1 / Fase 1: core loop
+- [x] Wave 0: infrastruktur kontrak (commit b14ceb6)
+- [x] Wave 1 / Fase 1: core loop (peta, telur, carry, place, hatch, pet, income, klien). Studio: Boot 17, CoreLoop 50, Life 27, Death 9 = 103 lulus; Lune 942 lulus.
 - [ ] Wave 2 / Fase 2+3
 - [ ] Wave 3 / Fase 4
 - [ ] Wave 4 / Fase 5
 - [ ] Wave 5 / Fase 6+7
 - [ ] Review kode paralel + soak test
 - [ ] Laporan akhir
+
+## Catatan Wave 1
+- Rekomendasi ekonomi dari simulasi (docs/ECONOMY.md) BELUM diterapkan: harga Sprint Wheel `1500*5.5^(L-1)`, hadiah speed Index `recSpeed*0.0005*slot`, wheel maxLevel ~30. Terapkan di Wave 2 saat Sprint Wheel dibangun (spec Formulas perlu diubah bersamanya).
+- Pemindahan ke Coop saat spawn memakai pengecekan berulang (engine menaruh karakter di SpawnLocation sesaat setelah CharacterAdded).
+- Tes Studio yang memindahkan pemain harus menunggu >= 1.2 detik setelah wipe/rejoin.
+- Cara menjalankan tes: `ServerStorage.TestBridge:Invoke("test.run", "<Boot|CoreLoop|Life|Death>")` setelah Play.

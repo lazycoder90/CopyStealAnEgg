@@ -27,6 +27,8 @@ return {
 	starwhale = { relayFixed = false, eggsFoundThisVisit = 0, lastVisitId = 0 },
 	companion = { stage = 1, progress = {}, claimed = {} },
 
+	lastIncomePerSec = 0,
+
 	freeBasketAt = 0,
 	shieldReadyAt = 0,
 	newbieProtectUntil = 0,

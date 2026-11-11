@@ -2,6 +2,7 @@
 -- Bus event gameplay (hanya server). Service memancarkan, service lain berlangganan.
 -- Semua payload berupa satu tabel. Field userId selalu number.
 --
+-- EggSpawned   { zone, speciesId, rarity, grand, nestId }
 -- EggGrabbed   { userId, eggUid, speciesId, rarity, zone, grand }
 -- EggPlaced    { userId, eggUid, speciesId, stolen }
 -- EggHatched   { userId, petUid, speciesId, rarity, zone, isNew }
@@ -14,6 +15,7 @@
 local Signal = require(game:GetService("ReplicatedStorage").Shared.Util.Signal)
 
 local names = {
+	"EggSpawned",
 	"EggGrabbed",
 	"EggPlaced",
 	"EggHatched",

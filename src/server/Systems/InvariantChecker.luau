@@ -15,6 +15,12 @@ function InvariantChecker.register(name: string, fn: (any) -> { string }?)
 	checks[name] = fn
 end
 
+-- Pemeriksaan tingkat dunia (sekali per putaran, bukan per pemain): fn() -> { pesan }
+local worldChecks = {}
+function InvariantChecker.registerWorld(name: string, fn: () -> { string }?)
+	worldChecks[name] = fn
+end
+
 local function finite(v): boolean
 	return type(v) == "number" and v == v and v ~= math.huge and v ~= -math.huge
 end
@@ -43,6 +49,16 @@ end)
 function InvariantChecker.check(): { string }
 	local DataService = require(script.Parent.Parent.Services.DataService)
 	local violations = {}
+	for name, fn in worldChecks do
+		local ok, result = pcall(fn)
+		if not ok then
+			table.insert(violations, `[{name}] pemeriksa error: {result}`)
+		elseif result then
+			for _, message in result do
+				table.insert(violations, `[{name}] {message}`)
+			end
+		end
+	end
 	for _, entry in DataService.all() do
 		for name, fn in checks do
 			local ok, result = pcall(fn, entry)
