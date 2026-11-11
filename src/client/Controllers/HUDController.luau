@@ -149,8 +149,9 @@ function HUDController.Start()
 	local function makeStack(name: string, anchorX: number, yOffset: number, height: number)
 		return UIBuilder.create("Frame", {
 			Name = name,
-			AnchorPoint = Vector2.new(anchorX, 0.5),
-			Position = UDim2.new(anchorX, anchorX == 0 and 12 or -12, 0.5, yOffset),
+			-- Ditambatkan dari ATAS (bukan dipusatkan) agar tombol teratas (Shop) tetap terjangkau di layar pendek.
+			AnchorPoint = Vector2.new(anchorX, 0),
+			Position = UDim2.new(anchorX, anchorX == 0 and 12 or -12, 0, yOffset),
 			Size = UDim2.fromOffset(110, height),
 			BackgroundTransparency = 1,
 			Parent = gui,
@@ -158,13 +159,13 @@ function HUDController.Start()
 				UIBuilder.create("UIListLayout", {
 					SortOrder = Enum.SortOrder.LayoutOrder,
 					Padding = UDim.new(0, 8),
-					VerticalAlignment = Enum.VerticalAlignment.Center,
+					VerticalAlignment = Enum.VerticalAlignment.Top,
 				}),
 			},
 		})
 	end
-	stacks.left = makeStack("LeftStack", 0, -80, 300)
-	stacks.right = makeStack("RightStack", 1, -56, 360)
+	stacks.left = makeStack("LeftStack", 0, 76, 300)
+	stacks.right = makeStack("RightStack", 1, 76, 360)
 
 	local bottom = UIBuilder.create("Frame", {
 		Name = "BottomLeft",

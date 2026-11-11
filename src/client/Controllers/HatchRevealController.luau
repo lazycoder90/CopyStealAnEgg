@@ -317,7 +317,9 @@ local function runReveal(data, gui)
 			showCard(session, data, backdrop)
 			cardShownAt = os.clock()
 			waitUntil(function()
+				-- Bila masih ada reveal lain mengantre, tutup lebih cepat supaya UI tidak terblokir lama.
 				return session.closed
+					or (#queue > 0 and os.clock() - cardShownAt >= CLICK_DELAY + 1)
 			end, AUTO_CLOSE)
 		end
 	end)
@@ -356,6 +358,9 @@ local function onReveal(data)
 	data.muts = type(data.muts) == "table" and data.muts or {}
 	data.name = tostring(data.name or "Creature")
 	table.insert(queue, data)
+	while #queue > 8 do
+		table.remove(queue, 1) -- batasi antrean agar rentetan reveal tidak memblokir layar
+	end
 	task.spawn(processQueue)
 end
 

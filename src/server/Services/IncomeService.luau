@@ -45,13 +45,36 @@ function IncomeService.compute(userId: number, data): number
 	if sum <= 0 then
 		return 0
 	end
+	-- Penyedia bonus/pengali didaftarkan service lain; satu error tidak boleh menghentikan income semua pemain.
 	local bonus = 1
-	for _, fn in bonuses do
-		bonus += fn(userId)
+	for name, fn in bonuses do
+		local ok, value = pcall(fn, userId)
+		if
+			ok
+			and type(value) == "number"
+			and value == value
+			and value >= 0
+			and value < math.huge
+		then
+			bonus += value
+		elseif not ok then
+			warn(`[IncomeService] bonus '{name}' gagal: {value}`)
+		end
 	end
 	local mult = 1
-	for _, fn in multipliers do
-		mult *= fn(userId)
+	for name, fn in multipliers do
+		local ok, value = pcall(fn, userId)
+		if
+			ok
+			and type(value) == "number"
+			and value == value
+			and value > 0
+			and value < math.huge
+		then
+			mult *= value
+		elseif not ok then
+			warn(`[IncomeService] pengali '{name}' gagal: {value}`)
+		end
 	end
 	return sum * bonus * mult
 end

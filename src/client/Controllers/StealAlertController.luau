@@ -61,6 +61,7 @@ end
 local function buildBillboard()
 	billboard = UIBuilder.create("BillboardGui", {
 		Name = "StealAlertMark",
+		ResetOnSpawn = false,
 		Size = UDim2.fromOffset(90, 90),
 		StudsOffset = Vector3.new(0, 20, 0),
 		AlwaysOnTop = true,

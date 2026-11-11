@@ -134,6 +134,7 @@ Types.Attr = {
 	PodHp = "PodHp", -- sisa pukulan pod Stardust
 	OddEgg = "OddEgg", -- telur aneh Starwhale (dirender klien; server memvalidasi jarak)
 	PenLevel = "PenLevel", -- Plot: level pen (visual pagar)
+	Stunned = "NBStunned", -- Humanoid: sedang di-stun (SpeedService tidak boleh menimpa WalkSpeed)
 	WheelGain = "WheelGain", -- Model roda: speed per step saat ini
 	WheelLevel = "WheelLevel",
 }

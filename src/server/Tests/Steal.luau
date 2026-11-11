@@ -111,12 +111,7 @@ return function(T)
 	bdata.newbieProtectUntil = Clock.now() + 100
 	T.check("korban newbie terlindungi", StealService.trySteal(userId, VICTIM, readyUid) == false)
 	bdata.newbieProtectUntil = 0
-	bdata.tutorial.done = false
-	T.check(
-		"korban belum selesai tutorial terlindungi",
-		StealService.trySteal(userId, VICTIM, readyUid) == false
-	)
-	bdata.tutorial.done = true
+	-- (Proteksi korban hanya lewat jendela newbie; imunitas tutorial tanpa batas dicabut: lihat tes Hardening.)
 
 	data.tutorial.done = false
 	T.check(

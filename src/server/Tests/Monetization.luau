@@ -225,7 +225,7 @@ return function(T)
 	petUid = call("pets.give", userId, "pebble_chick", 1.2)
 	call("pets.equip", userId, petUid)
 	T.wait(1.5)
-	local skip = product("skipGrowth", 1)
+	local skip = product("skipGrowth", 5) -- tier tertinggi: boleh menyelesaikan semua telur uji
 	addEgg("sk_a", 1000, 0)
 	addEgg("sk_b", 5000, 0)
 	addEgg("sk_c", 200, 0)
@@ -258,6 +258,19 @@ return function(T)
 		"skip fallback: telur terlama selesai",
 		data().eggs.sk_b.progress == data().eggs.sk_b.growTotal
 	)
+
+	-- Produk Skip murah (tier 1) tidak boleh menyelesaikan telur yang butuh tier lebih tinggi.
+	local skipLow = product("skipGrowth", 1)
+	addEgg("sk_d", 5000, 0)
+	data().pendingSkip = { uid = "sk_d", at = Clock.now() }
+	local cashBefore = data().cash
+	T.check("skip murah: granted", process(skipLow) == true)
+	T.check("skip murah tidak menyelesaikan telur mahal", data().eggs.sk_d.progress < 100)
+	T.check("skip murah: dikompensasi uang", data().cash > cashBefore)
+	T.check("skip murah: pendingSkip dibersihkan", next(data().pendingSkip) == nil)
+	-- Bersihkan telur uji agar skenario "tanpa target" berikutnya benar-benar tanpa target.
+	GrowthService.removeModel(userId, "sk_d")
+	data().eggs.sk_d = nil
 
 	local cc0 = data().cash
 	data().pendingSkip = { uid = "hilang", at = Clock.now() }

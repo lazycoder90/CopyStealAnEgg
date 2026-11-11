@@ -296,7 +296,7 @@ function UpgradeService.Init()
 	PlayerLifecycle.onJoin("UpgradeService", 100, function(ctx)
 		UpgradeService.refresh(ctx.userId)
 	end)
-	PlayerLifecycle.onLeaving("UpgradeService", 100, function(ctx)
+	PlayerLifecycle.onLeaving("UpgradeService", 80, function(ctx)
 		local plot = PlotService.getPlot(ctx.userId)
 		if plot then
 			updatePlot(plot, nil)

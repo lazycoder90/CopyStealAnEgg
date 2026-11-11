@@ -153,14 +153,25 @@ local function clearPending(userId: number, data)
 	StateReplicator.set(userId, "pendingSkip", {})
 end
 
-local function grantSkip(userId: number, data): boolean
+-- tier = tingkat produk yang DIBELI. Telur hanya boleh di-skip jika tier-nya (menurut sisa waktu) tidak
+-- lebih tinggi dari produk yang dibayar, sehingga produk murah tidak bisa menyelesaikan telur "mahal".
+local function grantSkip(userId: number, data, tier: any): boolean
+	local maxTier = tonumber(tier) or math.huge
+	local function eligible(uid: string): boolean
+		if not skippable(userId, uid, data) then
+			return false
+		end
+		local egg = data.eggs[uid]
+		return MonetizationMath.skipTier(egg.growTotal - egg.progress) <= maxTier
+	end
+
 	local pending = data.pendingSkip
 	local target = pending and pending.uid
-	if not (target and skippable(userId, target, data)) then
+	if not (target and eligible(target)) then
 		target = nil
 		local best = -1
 		for uid, egg in data.eggs do
-			if skippable(userId, uid, data) and egg.growTotal - egg.progress > best then
+			if eligible(uid) and egg.growTotal - egg.progress > best then
 				best = egg.growTotal - egg.progress
 				target = uid
 			end
@@ -222,7 +233,7 @@ end
 
 local function grant(userId: number, data, kind: string, arg): boolean
 	if kind == "skipGrowth" then
-		return grantSkip(userId, data)
+		return grantSkip(userId, data, arg)
 	elseif kind == "growAll" then
 		return grantGrowAll(userId, data)
 	elseif kind == "wheel" then

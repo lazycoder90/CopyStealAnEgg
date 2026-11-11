@@ -112,6 +112,11 @@ function TutorialService.skip(userId: number)
 	tutorial.step = LAST_STEP
 	tutorial.done = true
 	advanceAt[userId] = nil
+	local data = DataService.getByUserId(userId)
+	if data and (data.newbieProtectUntil or 0) > 0 then
+		data.newbieProtectUntil = 0 -- melewati tutorial berarti melepas proteksi newbie
+		StateReplicator.set(userId, "newbieProtectUntil", 0)
+	end
 	StateReplicator.set(userId, "tutorial.step", LAST_STEP)
 	StateReplicator.set(userId, "tutorial.done", true)
 	return true

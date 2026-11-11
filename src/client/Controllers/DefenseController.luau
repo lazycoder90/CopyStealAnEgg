@@ -203,6 +203,7 @@ function DefenseController.Start()
 
 		shieldBillboard = UIBuilder.create("BillboardGui", {
 			Name = "ShieldMark",
+			ResetOnSpawn = false,
 			Size = UDim2.fromOffset(180, 50),
 			StudsOffset = Vector3.new(0, 24, 0),
 			AlwaysOnTop = true,

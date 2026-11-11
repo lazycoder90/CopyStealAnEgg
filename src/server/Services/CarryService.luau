@@ -179,6 +179,10 @@ function CarryService.addPickupGuard(name: string, fn: (number, any) -> (boolean
 	pickupGuards[name] = fn
 end
 
+function CarryService.hasPickupImmunity(userId: number): boolean
+	return (immunity[userId] or 0) > os.clock()
+end
+
 function CarryService.setPickupImmunity(userId: number, seconds: number)
 	immunity[userId] = os.clock() + seconds
 end

@@ -36,7 +36,11 @@ local function watch(plot: Instance)
 	end)
 	plot.DescendantAdded:Connect(function(d)
 		if d:IsA("ProximityPrompt") then
-			task.defer(apply, plot)
+			task.defer(function()
+				if d.Parent and isUpgradePrompt(d) then
+					d.Enabled = plot:GetAttribute(Attr.OwnerUserId) == player.UserId
+				end
+			end)
 		end
 	end)
 end

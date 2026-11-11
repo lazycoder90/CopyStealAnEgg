@@ -216,7 +216,7 @@ function StealService.trySteal(
 	if plot and (plot:GetAttribute(Attr.ShieldUntil) or 0) > Clock.now() then
 		return fail("This Coop is protected by a Shell Shield!")
 	end
-	if (victimData.newbieProtectUntil or 0) > Clock.now() or victimData.tutorial.done == false then
+	if (victimData.newbieProtectUntil or 0) > Clock.now() then
 		return fail("This player is protected right now.")
 	end
 
@@ -243,6 +243,13 @@ function StealService.trySteal(
 	-- Telur dibekukan di profil korban; modelnya di Coop hilang (pencuri membawa salinannya).
 	GrowthService.setFrozen(victimId, eggUid, true)
 	GrowthService.removeModel(victimId, eggUid)
+
+	-- Pencuri melepas proteksi newbie miliknya sendiri (tidak adil mencuri sambil kebal).
+	thiefData = DataService.getByUserId(thiefId)
+	if thiefData and (thiefData.newbieProtectUntil or 0) > 0 then
+		thiefData.newbieProtectUntil = 0
+		StateReplicator.set(thiefId, "newbieProtectUntil", 0)
+	end
 
 	victimData.stats.beenStolen = (victimData.stats.beenStolen or 0) + 1
 	StateReplicator.set(victimId, "stats.beenStolen", victimData.stats.beenStolen)
@@ -326,6 +333,10 @@ function StealService.recover(
 		if distance > Eggs.grabMaxDistance + Eggs.grabValidateSlack then
 			return false, "Too far away."
 		end
+	end
+
+	if userId ~= victimId and not force and CarryService.hasPickupImmunity(userId) then
+		return false, "You can't pick up an egg right now."
 	end
 
 	if userId == victimId then

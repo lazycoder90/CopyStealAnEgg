@@ -248,7 +248,7 @@ local function buildUi()
 	compassFrame = UIBuilder.create("Frame", {
 		Name = "Compass",
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0, 82),
+		Position = UDim2.new(0.5, 0, 0, 150), -- di bawah banner Zone/Carry
 		Size = UDim2.fromOffset(140, 124),
 		BackgroundTransparency = 1,
 		Visible = false,
@@ -305,7 +305,7 @@ local function buildUi()
 	hintLabel = UIBuilder.create("TextLabel", {
 		Name = "Hint",
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0, 80),
+		Position = UDim2.new(0.5, 0, 0, 148),
 		Size = UDim2.fromOffset(300, 24),
 		BackgroundTransparency = 1,
 		Font = Theme.Fonts.Title,

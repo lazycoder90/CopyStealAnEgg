@@ -6,6 +6,7 @@ local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Creatures = require(Shared.Config.Creatures)
 local Eggs = require(Shared.Config.Eggs)
 local Progression = require(Shared.Config.Progression)
 local Net = require(Shared.Net.Net)
@@ -98,9 +99,19 @@ function PlacementService.insert(userId: number, egg, lx: number, lz: number): s
 	end
 
 	local growTotal = egg.growTotal
-	if (data.stats.hatched or 0) == 0 and not data.tutorial.done then
-		growTotal = math.min(growTotal, Eggs.tutorialGrowSeconds) -- telur pertama cepat menetas
+	-- Telur pertama cepat menetas (tutorial): hanya telur PERTAMA di Coop dan rarity rendah, supaya
+	-- tidak bisa dipakai menumpuk telur langka yang tumbuh 3 detik.
+	local creature = Creatures.get(egg.id)
+	if
+		placedCount(data) == 0
+		and (data.stats.hatched or 0) == 0
+		and not data.tutorial.done
+		and creature.rarity <= 3
+	then
+		growTotal = math.min(growTotal, Eggs.tutorialGrowSeconds)
 	end
+	-- "Dicuri" dihitung sekali per telur; menaruh ulang dari kantong tidak menghitung lagi.
+	local countsAsStolen = egg.stolenFrom ~= nil and not egg.stolenCounted
 
 	data.eggs[uid] = {
 		id = egg.id,
@@ -111,6 +122,7 @@ function PlacementService.insert(userId: number, egg, lx: number, lz: number): s
 		loc = "placed",
 		pos = { x = lx, z = lz },
 		stolenFrom = egg.stolenFrom,
+		stolenCounted = if egg.stolenFrom ~= nil then true else nil,
 		t = Clock.now(),
 	}
 	StateReplicator.set(userId, `eggs.{uid}`, data.eggs[uid])
@@ -120,7 +132,7 @@ function PlacementService.insert(userId: number, egg, lx: number, lz: number): s
 		userId = userId,
 		eggUid = uid,
 		speciesId = egg.id,
-		stolen = egg.stolenFrom ~= nil,
+		stolen = countsAsStolen,
 	})
 	return uid
 end

@@ -23,8 +23,8 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - [x] Wave 3 / Fase 4: Sell, Inventory, Growing Eggs, Index, Fuse, Mutation NPC, Offline, Free Basket, Friend Boost, Leaderboard. Studio total 609 pemeriksaan lulus (17 suite); Lune 1751.
 - [x] Wave 4 / Fase 5: Day/Night + Moonlit, Egg Reset + Announcement, Bud (Companion), Dash Derby, Starwhale (Relay puzzle, Compass, odd eggs, pods, trade). Studio total ~903 pemeriksaan (24 suite) lulus; Lune 6938.
 - [x] Wave 5 / Fase 6+7: Monetization (ID 0 = nonaktif aman), Badge, Settings, Shop, NEXT UPDATE, Sound/Atmosphere/Juice/Cinematic/Graphics/Settings UI. Studio total ~1018 pemeriksaan (27 suite) lulus; Lune 7161.
-- [ ] Review kode paralel + soak test
-- [ ] Laporan akhir
+- [x] Review kode paralel (3 reviewer) + perbaikan + soak test 30x (~60 menit waktu-game: 0 pelanggaran invarian, instance/memori stabil)
+- [x] Laporan akhir (lihat pesan terakhir dan docs/SETUP.md)
 
 ## Catatan Wave 1
 - Rekomendasi ekonomi dari simulasi (docs/ECONOMY.md) BELUM diterapkan: harga Sprint Wheel `1500*5.5^(L-1)`, hadiah speed Index `recSpeed*0.0005*slot`, wheel maxLevel ~30. Terapkan di Wave 2 saat Sprint Wheel dibangun (spec Formulas perlu diubah bersamanya).
@@ -55,3 +55,7 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - BUG NYATA ditemukan di integrasi: `UIScale` pada ScreenGui menyusutkan UI ke pojok kiri atas -> skala dibatasi (desktop 1.0). Sinematik menggantung bila klien tidak merender -> batas waktu keras + watchdog.
 - Suite baru: Leak, Settings, Cinematic, Monetization.
 - Tinggal: review kode paralel, soak test, laporan akhir.
+
+## Catatan akhir
+- Studio: 28 suite (~1044 pemeriksaan) lulus; Lune 7161 asersi lulus; Selene dan StyLua bersih; Output bersih.
+- Review kode menemukan 8 masalah server + 6 klien + 4 ekonomi; yang valid sudah diperbaiki dan diuji (Hardening 26 pemeriksaan).

@@ -9,6 +9,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Types = require(Shared.Types)
 local Formulas = require(Shared.Logic.Formulas)
 local Net = require(Shared.Net.Net)
 local Check = require(Shared.Util.Check)
@@ -87,6 +88,9 @@ local function apply(userId: number, force: boolean?)
 	if not humanoid then
 		applied[userId] = nil
 		return
+	end
+	if humanoid:GetAttribute(Types.Attr.Stunned) then
+		return -- selama stun WalkSpeed ditahan 0; pemulih stun memanggil refresh() setelahnya
 	end
 	local walk = SpeedService.getWalkSpeed(userId)
 	local record = applied[userId]

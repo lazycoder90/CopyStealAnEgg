@@ -61,7 +61,7 @@ local function ensureGui()
 	bigLabel = UIBuilder.create("TextLabel", {
 		Name = "BigCountdown",
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0, 200),
+		Position = UDim2.new(0.5, 0, 0, 252), -- di bawah objektif tutorial (y 150-234)
 		Size = UDim2.fromOffset(420, 64),
 		BackgroundTransparency = 1,
 		Font = Theme.Fonts.Title,

@@ -23,7 +23,7 @@ Alternatif tanpa Rojo live: `rojo build default.project.json -o build/NestBandit
 - **Gerbang statis:** `selene src tools` dan `stylua --check src tests tools`
 - **Studio (setelah Play):** dari MCP/command bar server:
   `game.ServerStorage.TestBridge:Invoke("test.run", "<Suite>")`
-  Suite: Boot, CoreLoop, Life, Death, Progression, Sell, Inventory, Offline, FreeBasket, Leaderboard, Index, Fuse, Mutation, Guardian, Tutorial, Steal, Defense, DayNight, EggReset, Companion, Race, Starwhale, Fuzz, Leak, Cinematic, Monetization, Settings.
+  Suite: Boot, CoreLoop, Life, Death, Progression, Sell, Inventory, Offline, FreeBasket, Leaderboard, Index, Fuse, Mutation, Guardian, Tutorial, Steal, Defense, DayNight, EggReset, Companion, Race, Starwhale, Fuzz, Leak, Cinematic, Monetization, Settings, Hardening.
   Suite berbot memanggil `bot.removeAll` setelah selesai. Beberapa suite lambat (Steal ~50 dtk, Defense ~45 dtk, Race ~60 dtk, Leak ~10 dtk).
 
 ## 5. Yang HARUS Anda isi sendiri (tidak bisa saya buat)

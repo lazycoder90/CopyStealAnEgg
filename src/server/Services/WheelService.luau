@@ -301,7 +301,7 @@ function WheelService.Init()
 		stepAcc[ctx.userId] = nil
 		WheelService.refresh(ctx.userId)
 	end)
-	PlayerLifecycle.onLeaving("WheelService", 100, function(ctx)
+	PlayerLifecycle.onLeaving("WheelService", 80, function(ctx)
 		stepAcc[ctx.userId] = nil
 		local plot = PlotService.getPlot(ctx.userId)
 		if plot then

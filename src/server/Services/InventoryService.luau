@@ -83,6 +83,7 @@ function InventoryService.place(
 		growTotal = egg.growTotal,
 		progress = egg.progress,
 		stolenFrom = egg.stolenFrom,
+		stolenCounted = egg.stolenCounted,
 	}
 	data.eggs[uid] = nil
 	StateReplicator.set(userId, `eggs.{uid}`, nil)

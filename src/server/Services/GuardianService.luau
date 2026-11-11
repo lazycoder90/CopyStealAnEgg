@@ -19,6 +19,7 @@ local Types = require(Shared.Types)
 
 local Systems = script.Parent.Parent.Systems
 local Actors = require(Systems.Actors)
+local Clock = require(Systems.Clock)
 local GameEvents = require(Systems.GameEvents)
 local InvariantChecker = require(Systems.InvariantChecker)
 local PlayerLifecycle = require(Systems.PlayerLifecycle)
@@ -94,7 +95,12 @@ local function tutorialBlocks(userId: number): boolean
 		return false
 	end
 	local TutorialService = require(script.Parent.TutorialService) -- lazy: hindari siklus require
-	return TutorialService.isActive(userId)
+	if not TutorialService.isActive(userId) then
+		return false
+	end
+	-- Kekebalan tutorial dibatasi waktu (jendela newbie), supaya tidak bisa ditahan selamanya.
+	local data = DataService.getByUserId(userId)
+	return data ~= nil and (data.newbieProtectUntil or 0) > Clock.now()
 end
 
 local function fireAlert(g)
@@ -149,12 +155,21 @@ local function stun(userId: number, humanoid: Humanoid)
 	end
 	local previous = humanoid.WalkSpeed
 	stunned[userId] = true
+	humanoid:SetAttribute(Types.Attr.Stunned, true)
 	humanoid.WalkSpeed = 0
 	task.delay(GuardianConfig.catchStunSeconds, function()
 		stunned[userId] = nil
-		-- Pulihkan hanya jika Humanoid masih ada dan belum diubah pihak lain.
-		if humanoid.Parent and humanoid.WalkSpeed == 0 then
-			humanoid.WalkSpeed = previous
+		if humanoid.Parent then
+			humanoid:SetAttribute(Types.Attr.Stunned, nil)
+			-- Pulihkan hanya jika Humanoid masih ada dan belum diubah pihak lain.
+			if humanoid.WalkSpeed == 0 then
+				humanoid.WalkSpeed = previous
+			end
+			-- Hitung ulang kecepatan sah (speed/trail bisa berubah selama stun).
+			local ok, SpeedService = pcall(require, script.Parent.SpeedService)
+			if ok then
+				SpeedService.refresh(userId)
+			end
 		end
 	end)
 end

@@ -138,8 +138,16 @@ local function restoreStun(userId: number, record)
 	end
 	stunned[userId] = nil
 	local humanoid = record.humanoid
-	if humanoid.Parent and humanoid.WalkSpeed == 0 then
-		humanoid.WalkSpeed = record.previous
+	if humanoid.Parent then
+		humanoid:SetAttribute(Attr.Stunned, nil)
+		if humanoid.WalkSpeed == 0 then
+			humanoid.WalkSpeed = record.previous
+		end
+		-- Hitung ulang kecepatan sah (speed/trail bisa berubah selama stun).
+		local ok, SpeedService = pcall(require, script.Parent.SpeedService)
+		if ok then
+			SpeedService.refresh(userId)
+		end
 	end
 end
 
@@ -150,6 +158,7 @@ local function stun(userId: number)
 	end
 	local record = { humanoid = humanoid, previous = humanoid.WalkSpeed }
 	stunned[userId] = record
+	humanoid:SetAttribute(Attr.Stunned, true)
 	humanoid.WalkSpeed = 0
 	task.delay(PvpRules.panStun, restoreStun, userId, record)
 end
