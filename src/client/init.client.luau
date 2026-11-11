@@ -1,10 +1,12 @@
 --!nonstrict
--- Bootstrap klien. StateController harus Start lebih dulu agar tidak ketinggalan StateInit.
+-- Bootstrap klien. Semua modul di Controllers/ dimuat otomatis; ClientReady dikirim setelah
+-- semua Start selesai sehingga snapshot state dari server tidak terlewat.
 
-local Controllers = script.Controllers
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local StateController = require(Controllers.StateController)
-local HUDController = require(Controllers.HUDController)
+local Net = require(ReplicatedStorage:WaitForChild("Shared").Net.Net)
+local Boot = require(script.Boot)
 
-StateController.Start()
-HUDController.Start()
+Boot.run({ script.Controllers })
+
+Net.send("ClientReady")

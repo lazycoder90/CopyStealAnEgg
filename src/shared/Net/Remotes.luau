@@ -4,6 +4,8 @@
 return {
 	-- Klien -> Server (semua divalidasi & dibatasi rate di server)
 	C2S = {
+		-- Jabat tangan: klien sudah menyambung semua listener, server boleh mengirim snapshot
+		ClientReady = 2,
 		-- Telur
 		DropEgg = 5,
 		PlaceEgg = 5,
