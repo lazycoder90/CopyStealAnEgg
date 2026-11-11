@@ -81,3 +81,10 @@ Konstanta nama attribute/tag/folder SELALU dari `src/shared/Types.luau` (`Types.
 - Mutasi: `Mutations.list.Moonlit` (x2.5, `source="night"`), `Mutations.moonlitChancePerNight`; `MutationLogic.add/canAdd/format`.
 - Data profil terkait: `data.companion = {stage, progress, claimed}`, `data.starwhale = {relayFixed, eggsFoundThisVisit, lastVisitId}`, `data.gear = {pan, trap, compass}`, `data.raceBest = {}`, `data.trophies`, `data.stardust`, `data.boosts`.
 - Setelah mengubah data egg (mutasi, dll.) panggil `GrowthService.ensureModel(userId, uid)` agar atribut model ikut diperbarui.
+
+## Tambahan untuk Wave 5 (monetisasi dan polish)
+- Field profil baru: `pendingSkip = {}` (`{uid, at}` saat menunggu Skip Growth), `passes = {}` (penanda efek gamepass sekali-beri), `cinematicSeen = false`, `receipts` = `{[tostring(PurchaseId)] = Clock.now()}` (pangkas ke ~100).
+- `settings = {music, sfx, slowMode, lowGfx}` dibaca klien dari `StateController.get("settings.sfx")` dst. Remote `SetSetting(key, value)`.
+- Aset suara bawaan yang AMAN (ada di Studio): `rbxasset://sounds/{action_jump.mp3, action_get_up.mp3, action_jump_land.mp3, action_swim.mp3, impact_explosion_03.mp3, impact_water.mp3, oof.ogg, ouch.ogg, volume_slider.ogg}`. Dilarang memakai path/ID audio lain (akan memunculkan error aset di Output).
+- ID produk/gamepass/badge semua `0` di Config: fitur dinonaktifkan dengan aman (tombol "Coming soon"), tidak pernah memanggil Prompt* dengan ID 0.
+- `Layout.hubStalls.nextUpdate` untuk papan NEXT UPDATE.

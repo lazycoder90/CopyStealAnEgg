@@ -145,12 +145,13 @@ function HUDController.Start()
 		IgnoreGuiInset = false,
 	})
 
-	local function makeStack(name: string, anchorX: number)
+	-- yOffset menggeser tumpukan ke atas agar tidak menimpa chip kiri-bawah / kanan-bawah (audit Wave 5).
+	local function makeStack(name: string, anchorX: number, yOffset: number, height: number)
 		return UIBuilder.create("Frame", {
 			Name = name,
 			AnchorPoint = Vector2.new(anchorX, 0.5),
-			Position = UDim2.new(anchorX, anchorX == 0 and 12 or -12, 0.5, 0),
-			Size = UDim2.fromOffset(110, 300),
+			Position = UDim2.new(anchorX, anchorX == 0 and 12 or -12, 0.5, yOffset),
+			Size = UDim2.fromOffset(110, height),
 			BackgroundTransparency = 1,
 			Parent = gui,
 			[UIBuilder.Children] = {
@@ -162,8 +163,8 @@ function HUDController.Start()
 			},
 		})
 	end
-	stacks.left = makeStack("LeftStack", 0)
-	stacks.right = makeStack("RightStack", 1)
+	stacks.left = makeStack("LeftStack", 0, -80, 300)
+	stacks.right = makeStack("RightStack", 1, -56, 360)
 
 	local bottom = UIBuilder.create("Frame", {
 		Name = "BottomLeft",

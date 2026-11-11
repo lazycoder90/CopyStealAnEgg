@@ -319,7 +319,7 @@ local function buildUi()
 	chip = UIBuilder.create("TextLabel", {
 		Name = "StardustChip",
 		AnchorPoint = Vector2.new(0, 1),
-		Position = UDim2.new(0, 16, 1, -190),
+		Position = UDim2.new(0, 16, 1, -198),
 		Size = UDim2.fromOffset(170, 34),
 		BackgroundColor3 = Color3.fromRGB(70, 56, 140),
 		Font = Theme.Fonts.Title,

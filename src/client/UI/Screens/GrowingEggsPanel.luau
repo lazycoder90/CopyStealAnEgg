@@ -107,16 +107,18 @@ function GrowingEggsPanel.build(container: Frame, state)
 	})
 	local growAll = Button.new({
 		name = "GrowAll",
-		text = "Grow All: Robux (soon)",
+		text = "Grow All (R$)",
 		color = Theme.Colors.Yolk,
 		anchorPoint = Vector2.new(1, 0),
 		position = UDim2.new(1, -4, 0, 0),
 		size = UDim2.fromOffset(230, 36),
 		textSize = 16,
+		onClick = function()
+			Net.send("RequestGrowAll") -- server membalas "belum tersedia" selama ID produk masih 0
+		end,
 		parent = container,
 	})
 	growAll.ZIndex = 4
-	Button.setDisabled(growAll, true)
 
 	local list = UIBuilder.create("ScrollingFrame", {
 		Name = "List",
@@ -214,16 +216,18 @@ function GrowingEggsPanel.build(container: Frame, state)
 			else
 				local skip = Button.new({
 					name = "Skip",
-					text = "Robux (soon)",
+					text = "Skip (R$)",
 					color = Theme.Colors.Yolk,
 					anchorPoint = Vector2.new(1, 0.5),
 					position = UDim2.new(1, -8, 0.5, 0),
 					size = UDim2.fromOffset(150, 36),
 					textSize = 14,
+					onClick = function()
+						Net.send("RequestSkipGrowth", item.uid)
+					end,
 					parent = row,
 				})
 				skip.ZIndex = 5
-				Button.setDisabled(skip, true)
 			end
 		end
 		rows[item.uid] = { status = status, ready = ready, loc = egg.loc }

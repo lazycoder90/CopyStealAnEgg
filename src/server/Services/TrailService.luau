@@ -136,6 +136,22 @@ function TrailService.buy(userId: number, trailId: string, currency: string): (b
 	return true
 end
 
+-- Memberi trail tanpa pembayaran (pembelian Robux sudah diproses MonetizationService).
+-- Idempoten: trail yang sudah dimiliki tetap mengembalikan true.
+function TrailService.grant(userId: number, trailId: string): boolean
+	local data = DataService.getByUserId(userId)
+	local def = byId[trailId]
+	if not (data and def) then
+		return false
+	end
+	if not data.trails.owned[trailId] then
+		data.trails.owned[trailId] = true
+		StateReplicator.set(userId, `trails.owned.{trailId}`, true)
+		notify(userId, `Unlocked the {def.name} trail!`, "success")
+	end
+	return true
+end
+
 -- Memasang trail; memanggil dengan trail yang sedang dipasang (atau "") melepasnya.
 function TrailService.equip(userId: number, trailId: string): (boolean, string?)
 	local data = DataService.getByUserId(userId)

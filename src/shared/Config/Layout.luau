@@ -22,6 +22,7 @@ Layout.hubStalls = {
 	mutation = { x = -150, z = 95 },
 	basket = { x = -105, z = 95 }, -- Free Basket
 	tilly = { x = 240, z = 95 }, -- Signal Tower (Astronomer Tilly, event Starwhale)
+	nextUpdate = { x = -240, z = 95 }, -- papan NEXT UPDATE
 	boardMoney = { x = -120, z = -300 }, -- papan Money/s (dinding belakang hub)
 	boardTrophy = { x = 120, z = -300 },
 }

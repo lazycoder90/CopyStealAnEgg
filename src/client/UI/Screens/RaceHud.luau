@@ -38,7 +38,7 @@ function RaceHud.new(parent: Instance)
 	self.receivedAt = 0
 	self.frame = UIBuilder.create("Frame", {
 		Name = "RaceHud",
-		Position = UDim2.fromOffset(12, 8),
+		Position = UDim2.fromOffset(134, 8),
 		Size = UDim2.fromOffset(230, 128),
 		BackgroundColor3 = Theme.Colors.Brown,
 		BackgroundTransparency = 0.35,

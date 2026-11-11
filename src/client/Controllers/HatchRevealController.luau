@@ -21,6 +21,7 @@ local Theme = require(UI.Theme)
 local UIBuilder = require(UI.UIBuilder)
 local Button = require(UI.Components.Button)
 local Panel = require(UI.Components.Panel)
+local SoundController = require(script.Parent.SoundController)
 
 local HatchRevealController = {}
 
@@ -140,6 +141,7 @@ local function showCard(session, data, root)
 	local maid = session.maid
 	local rarityColor = ModelFactory.rarityColor(data.rarity)
 	local rarityName = Rarities.get(data.rarity).name
+	SoundController.play(if data.rarity >= 5 then "hatch_rare" else "hatch")
 
 	-- Flash putih.
 	local flash = UIBuilder.create("Frame", {

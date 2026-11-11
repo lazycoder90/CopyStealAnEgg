@@ -46,6 +46,9 @@ return {
 	tutorial = { step = 1, done = false },
 	settings = { music = true, sfx = true, slowMode = false, lowGfx = false },
 
-	receipts = {}, -- PurchaseId yang sudah diproses (maks 50 terakhir)
+	receipts = {}, -- [tostring(PurchaseId)] = Clock.now(); dipangkas ke ~100 terbaru
+	pendingSkip = {}, -- {uid = eggUid, at = Clock.now()} saat menunggu pembayaran Skip Growth
+	passes = {}, -- penanda efek gamepass sekali-beri (mis. equip3 = true)
+	cinematicSeen = false,
 	badges = {},
 }

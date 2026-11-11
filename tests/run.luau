@@ -25,6 +25,8 @@ local specs = {
 	{ "RaceMath", require("./unit/RaceMath.spec") },
 	{ "StarwhaleMath", require("./unit/StarwhaleMath.spec") },
 	{ "CompanionMath", require("./unit/CompanionMath.spec") },
+	{ "AtmosphereMath", require("./unit/AtmosphereMath.spec") },
+	{ "MonetizationMath", require("./unit/MonetizationMath.spec") },
 	{ "CycleMath", require("./unit/CycleMath.spec") },
 	{ "LeaderboardMath", require("./unit/LeaderboardMath.spec") },
 	{ "OfflineMath", require("./unit/OfflineMath.spec") },

@@ -118,7 +118,7 @@ function PanController.Start()
 		ring = UIBuilder.create("Frame", {
 			Name = "Ring",
 			AnchorPoint = Vector2.new(0.5, 1),
-			Position = UDim2.new(0.5, 0, 1, -96),
+			Position = UDim2.new(0.5, 0, 1, -140),
 			Size = UDim2.fromOffset(120, 8),
 			BackgroundColor3 = Theme.Colors.Brown,
 			BackgroundTransparency = 0.4,

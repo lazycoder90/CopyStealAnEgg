@@ -228,6 +228,19 @@ function WheelService.upgrade(userId: number, currency: string): (boolean, strin
 	return true
 end
 
+-- Menaikkan level roda 1 tingkat tanpa biaya (produk Robux). false bila sudah maksimum.
+function WheelService.grantLevel(userId: number): boolean
+	local data = DataService.getByUserId(userId)
+	if not data or data.wheelLevel >= Progression.wheel.maxLevel then
+		return false
+	end
+	data.wheelLevel += 1
+	StateReplicator.set(userId, "wheelLevel", data.wheelLevel)
+	WheelService.refresh(userId)
+	notify(userId, "Your Sprint Wheel gained a level!", "success")
+	return true
+end
+
 -- Satu tick untuk satu pemain. movingOverride (uji) menggantikan MoveDirection.
 -- Mengembalikan speed yang diberikan pada tick ini.
 local function tickPlayer(userId: number, dt: number, movingOverride: boolean?): number

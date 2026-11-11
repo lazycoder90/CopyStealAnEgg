@@ -22,7 +22,7 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - [x] Wave 2 / Fase 2+3: Speed/Wheel/Upgrade/Trail/AntiExploit, Guardian/Zone/Tutorial/Impact, Steal/Defense/Bots. Studio: 367 pemeriksaan lulus (Boot 17, CoreLoop 50, Life 27, Death 9, Progression 62, Guardian 46, Tutorial 35, Steal 57, Defense 64); Lune 1471.
 - [x] Wave 3 / Fase 4: Sell, Inventory, Growing Eggs, Index, Fuse, Mutation NPC, Offline, Free Basket, Friend Boost, Leaderboard. Studio total 609 pemeriksaan lulus (17 suite); Lune 1751.
 - [x] Wave 4 / Fase 5: Day/Night + Moonlit, Egg Reset + Announcement, Bud (Companion), Dash Derby, Starwhale (Relay puzzle, Compass, odd eggs, pods, trade). Studio total ~903 pemeriksaan (24 suite) lulus; Lune 6938.
-- [ ] Wave 5 / Fase 6+7
+- [x] Wave 5 / Fase 6+7: Monetization (ID 0 = nonaktif aman), Badge, Settings, Shop, NEXT UPDATE, Sound/Atmosphere/Juice/Cinematic/Graphics/Settings UI. Studio total ~1018 pemeriksaan (27 suite) lulus; Lune 7161.
 - [ ] Review kode paralel + soak test
 - [ ] Laporan akhir
 
@@ -50,3 +50,8 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - Suite baru: Fuzz, DayNight, EggReset, Companion, Race (~60 dtk), Starwhale. Peringatan `[AntiExploit] ... dikembalikan` di Output berasal dari tes Progression yang sengaja teleport 300 stud tanpa grace (wajar).
 - Pola bug tes yang berulang: helper `call` yang memakai `result.ok and result.result or nil` mengubah hasil `false` menjadi `nil`. Jangan pakai pola itu untuk hasil boolean.
 - Badge HUD kini auto-lebar untuk teks panjang ("OPEN 4:52").
+
+## Catatan Wave 5
+- BUG NYATA ditemukan di integrasi: `UIScale` pada ScreenGui menyusutkan UI ke pojok kiri atas -> skala dibatasi (desktop 1.0). Sinematik menggantung bila klien tidak merender -> batas waktu keras + watchdog.
+- Suite baru: Leak, Settings, Cinematic, Monetization.
+- Tinggal: review kode paralel, soak test, laporan akhir.

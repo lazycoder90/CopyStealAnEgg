@@ -17,6 +17,7 @@ local Theme = require(UI.Theme)
 local UIBuilder = require(UI.UIBuilder)
 local Button = require(UI.Components.Button)
 local NotificationController = require(script.Parent.NotificationController)
+local SoundController = require(script.Parent.SoundController)
 
 local CarryController = {}
 CarryController.changed = Signal.new() -- (carrying: boolean, payload)
@@ -89,19 +90,23 @@ local function onCarryChanged(data)
 		chipName.TextColor3 = ModelFactory.rarityColor(data.rarity or 1)
 		chipIncome.Text = NumberFormat.fmtRate(data.projectedIncome or 0)
 		setVisible(true)
+		SoundController.play("grab")
 		CarryController.changed:Fire(true, data)
 	else
 		payload = nil
 		setVisible(false)
 		local reason = data.reason
 		if reason == "caught" then
+			SoundController.play("caught")
 			flashCaught()
 		elseif reason == "dropped" or reason == "died" then
+			SoundController.play("drop")
 			NotificationController.push(
 				reason == "died" and "You dropped the egg." or "Egg dropped.",
 				"info"
 			)
 		elseif reason == "placed" then
+			SoundController.play("place")
 			NotificationController.push("Egg placed!", "success")
 		end
 		CarryController.changed:Fire(false, data)

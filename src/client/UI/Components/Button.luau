@@ -6,6 +6,7 @@ local TweenService = game:GetService("TweenService")
 local UI = script.Parent.Parent
 local Theme = require(UI.Theme)
 local UIBuilder = require(UI.UIBuilder)
+local SoundController = require(UI.Parent.Controllers.SoundController)
 
 local Button = {}
 
@@ -75,8 +76,11 @@ function Button.new(props: { [string]: any })
 		tweenTo(scale, { Scale = 1 })
 	end)
 	button.Activated:Connect(function()
-		if not disabled and props.onClick then
-			props.onClick()
+		if not disabled then
+			pcall(SoundController.play, "ui_click")
+			if props.onClick then
+				props.onClick()
+			end
 		end
 	end)
 
