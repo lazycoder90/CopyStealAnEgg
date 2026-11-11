@@ -20,7 +20,7 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - [x] Wave 0: infrastruktur kontrak (commit b14ceb6)
 - [x] Wave 1 / Fase 1: core loop (peta, telur, carry, place, hatch, pet, income, klien). Studio: Boot 17, CoreLoop 50, Life 27, Death 9 = 103 lulus; Lune 942 lulus.
 - [x] Wave 2 / Fase 2+3: Speed/Wheel/Upgrade/Trail/AntiExploit, Guardian/Zone/Tutorial/Impact, Steal/Defense/Bots. Studio: 367 pemeriksaan lulus (Boot 17, CoreLoop 50, Life 27, Death 9, Progression 62, Guardian 46, Tutorial 35, Steal 57, Defense 64); Lune 1471.
-- [ ] Wave 3 / Fase 4
+- [x] Wave 3 / Fase 4: Sell, Inventory, Growing Eggs, Index, Fuse, Mutation NPC, Offline, Free Basket, Friend Boost, Leaderboard. Studio total 609 pemeriksaan lulus (17 suite); Lune 1751.
 - [ ] Wave 4 / Fase 5
 - [ ] Wave 5 / Fase 6+7
 - [ ] Review kode paralel + soak test
@@ -38,3 +38,9 @@ Rencana: `/Users/eko/.claude/plans/binary-sauteeing-riddle.md` (strategi) dan `d
 - `EggSpawnService.takeEgg` kini tahan terhadap model telur yang sudah hancur.
 - Daftar suite Studio: Boot, CoreLoop, Life, Death, Progression, Guardian, Tutorial, Steal (~50 dtk), Defense (~45 dtk). Selalu `bot.removeAll` setelah suite berbot.
 - docs/ECONOMY.md rec #2 (hadiah speed Index) dan #3 diterapkan di Wave 3 / sudah (wheel maxLevel 30).
+
+## Catatan Wave 3
+- Hub stall dibangun di `Layout.hubStalls` (trails, sell, fuse, mutation, basket, boardMoney, boardTrophy); klien membuka panel lewat `ProximityPromptService.PromptTriggered` + nama prompt di Config tiap fitur.
+- Rumus hadiah speed Index: `round(5 + (slot-1) + recSpeed*0.0005*slot)` (naik monoton; docs/ECONOMY.md rec #2 disesuaikan agar zona awal tidak datar).
+- Leaderboard memakai OrderedDataStore bila tersedia, fallback ke pemain di server (Studio tanpa API).
+- Daftar suite Studio: Boot, CoreLoop, Life, Death, Progression, Sell, Inventory, Offline, FreeBasket, Leaderboard, Index, Fuse, Mutation, Guardian, Tutorial, Steal, Defense. Tes yang mengubah data harus mengembalikannya (invarian berkala mencetak error merah jika ada nilai tidak sah).

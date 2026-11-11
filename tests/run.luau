@@ -20,6 +20,11 @@ local specs = {
 	{ "AntiExploitMath", require("./unit/AntiExploitMath.spec") },
 	{ "GuardianChase", require("./unit/GuardianChase.spec") },
 	{ "PvpRules", require("./unit/PvpRules.spec") },
+	{ "SellMath", require("./unit/SellMath.spec") },
+	{ "IndexMath", require("./unit/IndexMath.spec") },
+	{ "LeaderboardMath", require("./unit/LeaderboardMath.spec") },
+	{ "OfflineMath", require("./unit/OfflineMath.spec") },
+	{ "BasketRoll", require("./unit/BasketRoll.spec") },
 }
 
 local failed, total = 0, 0

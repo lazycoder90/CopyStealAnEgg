@@ -14,6 +14,17 @@ Layout.zoneLength = 300
 Layout.laneWidth = 120 -- lebar lane (X dari -60 sampai 60)
 Layout.wallHeight = 30
 
+-- Posisi kios/papan di hub (x, z). Baris z=95 ada di antara spawn pad dan Hearth Line. Jangan tumpang tindih.
+Layout.hubStalls = {
+	trails = { x = -60, z = 95 }, -- TRAILS SHOP (sudah ada)
+	sell = { x = 60, z = 95 },
+	fuse = { x = 150, z = 95 },
+	mutation = { x = -150, z = 95 },
+	basket = { x = -105, z = 95 }, -- Free Basket
+	boardMoney = { x = -120, z = -300 }, -- papan Money/s (dinding belakang hub)
+	boardTrophy = { x = 120, z = -300 },
+}
+
 -- Spawn pad PvP-free di hub.
 Layout.spawnPad = { x = 0, z = 70, radius = 26 }
 

@@ -83,6 +83,42 @@ function Check.uidList(maxLen: number): Validator
 	end
 end
 
+-- Grid bilangan bulat rows x cols (array of array), tiap nilai di [min, max]. Dipakai SubmitRelay (rotasi 5x5).
+function Check.intGrid(rows: number, cols: number, min: number, max: number): Validator
+	local isInt = Check.int(min, max)
+	return function(v)
+		if type(v) ~= "table" then
+			return false
+		end
+		local rowCount = 0
+		for _ in v do
+			rowCount += 1
+		end
+		if rowCount ~= rows or #v ~= rows then
+			return false
+		end
+		for r = 1, rows do
+			local row = v[r]
+			if type(row) ~= "table" then
+				return false
+			end
+			local colCount = 0
+			for _ in row do
+				colCount += 1
+			end
+			if colCount ~= cols or #row ~= cols then
+				return false
+			end
+			for c = 1, cols do
+				if not isInt(row[c]) then
+					return false
+				end
+			end
+		end
+		return true
+	end
+end
+
 function Check.optional(validator: Validator): Validator
 	local wrapped: any = function(v)
 		return v == nil or validator(v)

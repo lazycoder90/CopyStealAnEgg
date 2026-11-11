@@ -162,7 +162,7 @@ function HUDController.Start()
 		Name = "BottomLeft",
 		AnchorPoint = Vector2.new(0, 1),
 		Position = UDim2.new(0, 16, 1, -16),
-		Size = UDim2.fromOffset(260, 110),
+		Size = UDim2.fromOffset(260, 136),
 		BackgroundTransparency = 1,
 		Parent = gui,
 		[UIBuilder.Children] = {
@@ -175,9 +175,12 @@ function HUDController.Start()
 	local speed = stat("Speed", 1, Theme.Colors.White, 28)
 	local cash = stat("Cash", 2, Theme.Colors.Mint, 28)
 	local income = stat("Income", 3, Theme.Colors.Yolk, 22)
+	local friend = stat("FriendBoost", 4, Theme.Colors.Mint, 18)
+	friend.Visible = false
 	speed.Parent = bottom
 	cash.Parent = bottom
 	income.Parent = bottom
+	friend.Parent = bottom
 
 	local function refresh()
 		local effective = StateController.get("speedEffective")
@@ -186,6 +189,9 @@ function HUDController.Start()
 		speed.Text = "Speed " .. NumberFormat.fmt(effective)
 		cash.Text = NumberFormat.fmtMoney(StateController.get("cash") or 0)
 		income.Text = NumberFormat.fmtRate(StateController.get("lastIncomePerSec") or 0)
+		local boost = StateController.get("friendBoost") or 0
+		friend.Visible = boost > 0
+		friend.Text = `Friend Boost +{math.floor(boost * 100 + 0.5)}%`
 	end
 
 	StateController.changed:Connect(function(path)
@@ -195,6 +201,7 @@ function HUDController.Start()
 			or path == "speedBase"
 			or path == "speedEffective"
 			or path == "lastIncomePerSec"
+			or path == "friendBoost"
 		then
 			refresh()
 		end

@@ -54,3 +54,16 @@ Konstanta nama attribute/tag/folder SELALU dari `src/shared/Types.luau` (`Types.
 ## Konvensi pengujian
 - Tes Lune: `tests/unit/<Nama>.spec.luau` (`return function(t) t.eq/near/truthy end`). Agen TIDAK mengedit `tests/run.luau`; agen utama mendaftarkannya.
 - Tes Studio: `src/server/Tests/<Nama>.luau`. Setelah `DataService.wipe`/`simulateRejoin` tunggu >= 1.2 detik (pemain dipindahkan ke Coop sampai ~0.85 detik). Bot uji: `Systems/Bots.luau` (dibuat agen PvP).
+
+## Tambahan setelah Wave 2
+- `PlacementService.validate(userId, worldPos) -> ok, err, lx, lz` (galat: tooFar > badSpot > tooClose > coopFull), `PlacementService.insert(userId, egg{uid,id,kg,muts,growTotal,progress,stolenFrom?}, lx, lz) -> uid` (tanpa yield; tulis profil, replikasi, model, event EggPlaced), `PlacementService.place(userId, worldPos)` (telur yang dibawa).
+- `SpeedService`: `getEffectiveSpeed(userId)`, `getWalkSpeed(userId)`, `addMultiplier(name, fn)`, `refresh(userId)` (panggil setelah mengubah WalkSpeed manual/stun). `boosts.speed2xUntil > Clock.now()` = potion 1.5x.
+- `UpgradeService`: `upgradePen`, `buyEquipSlot`, `buyPlotExpansion`, `refresh(userId)`. `TrailService`: `buy/equip`. `WheelService`: `upgrade`.
+- `AntiExploit.grace(userId, seconds, reason)` WAJIB untuk gerakan sah. Teleport uji: `TestBridge.teleport(userId, pos)`.
+- `StealService.trySteal(thiefId, victimId, eggUid)`; carry kind `steal`. `GrowthService.setFrozen/isFrozen` untuk telur yang sedang dicuri (egg tetap ada di profil korban; jangan jual/pocket/mutasi telur beku).
+- `DefenseService`: `swing`, `placeTrap`, `activateShield`. Plot attribute `ShieldUntil`.
+- `GuardianService`, `ZoneService.getZone(userId)`, `TutorialService.isActive(userId)`.
+- `Bots` (uji): hook `bot.spawn(id)`, `bot.giveEgg(id, speciesId, kg?, ready?)`, `bot.removeAll`. Bot id negatif; semua bot harus `tutorial.done = true` bila perlu dicuri/mencuri.
+- Layout: `Layout.hubStalls = {trails, sell, fuse, mutation, basket, boardMoney, boardTrophy}` posisi kios hub (x,z). Pakai posisi ini; jangan tumpang tindih.
+- Klien: `ModalController`, `HUDController.registerButton`, `NotificationController.push`, `HatchRevealController` (kartu reveal), `Button/Panel/Modal`. Kios dibuka lewat `ProximityPromptService.PromptTriggered` di klien dengan nama prompt konstan di file Config milik fitur (contoh `Progression.trailShop.promptName`).
+- Aturan tes Studio: tutup suite berbot dengan `bot.removeAll`; setelah `wipe`/`simulateRejoin` tunggu >= 1.2 dtk; teleport lewat `TestBridge.teleport`; uji juga dengan JALAN sungguhan bila menyangkut peta.

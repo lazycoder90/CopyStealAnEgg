@@ -41,11 +41,12 @@ local function placedCount(data): number
 	return n
 end
 
--- Mengembalikan true, atau false + pesan galat.
-function PlacementService.place(userId: number, worldPos: Vector3): (boolean, string?)
-	if not CarryService.isCarrying(userId) then
-		return false, Eggs.messages.notCarrying
-	end
+-- Validasi target penempatan (tanpa syarat membawa telur). Mengembalikan true, nil, lx, lz
+-- atau false + pesan galat. Urutan galat: tooFar -> badSpot -> tooClose -> coopFull.
+function PlacementService.validate(
+	userId: number,
+	worldPos: Vector3
+): (boolean, string?, number?, number?)
 	local data = DataService.getByUserId(userId)
 	local plot = PlotService.getPlot(userId)
 	local root = Actors.getRoot(userId)
@@ -84,12 +85,13 @@ function PlacementService.place(userId: number, worldPos: Vector3): (boolean, st
 	if placedCount(data) >= Progression.eggSlotsFor(data.penLevel, data.plotExpansion) then
 		return false, Eggs.messages.coopFull
 	end
+	return true, nil, lx, lz
+end
 
-	-- Semua lolos: serahkan telur dan masukkan ke profil (tanpa yield, atomik).
-	local egg = CarryService.consume(userId)
-	if not egg then
-		return false, Eggs.messages.notCarrying
-	end
+-- Memasukkan telur ke Coop pada koordinat lokal (lx, lz) yang SUDAH divalidasi. Tanpa yield.
+-- egg = { uid, id, kg, muts, growTotal, progress, stolenFrom? }. Mengembalikan uid yang dipakai.
+function PlacementService.insert(userId: number, egg, lx: number, lz: number): string
+	local data = DataService.getByUserId(userId)
 	local uid = egg.uid
 	if data.eggs[uid] then
 		uid = newUid()
@@ -105,7 +107,7 @@ function PlacementService.place(userId: number, worldPos: Vector3): (boolean, st
 		kg = egg.kg,
 		muts = egg.muts or {},
 		growTotal = growTotal,
-		progress = egg.progress or 0,
+		progress = math.min(egg.progress or 0, growTotal),
 		loc = "placed",
 		pos = { x = lx, z = lz },
 		stolenFrom = egg.stolenFrom,
@@ -120,6 +122,24 @@ function PlacementService.place(userId: number, worldPos: Vector3): (boolean, st
 		speciesId = egg.id,
 		stolen = egg.stolenFrom ~= nil,
 	})
+	return uid
+end
+
+-- Menaruh telur yang SEDANG DIBAWA. Mengembalikan true, atau false + pesan galat.
+function PlacementService.place(userId: number, worldPos: Vector3): (boolean, string?)
+	if not CarryService.isCarrying(userId) then
+		return false, Eggs.messages.notCarrying
+	end
+	local ok, err, lx, lz = PlacementService.validate(userId, worldPos)
+	if not ok then
+		return false, err
+	end
+	-- Semua lolos: serahkan telur dan masukkan ke profil (tanpa yield, atomik).
+	local egg = CarryService.consume(userId)
+	if not egg then
+		return false, Eggs.messages.notCarrying
+	end
+	PlacementService.insert(userId, egg, lx, lz)
 	return true
 end
 

@@ -54,6 +54,7 @@ export type HatchRevealPayload = {
 	isNew: boolean,
 }
 
+export type FuseResultPayload = HatchRevealPayload & { upgraded: boolean, prism: boolean }
 export type CaughtPayload = { knock: Vector3, zone: number? } -- knock = arah * kekuatan (klien menerapkan)
 export type BonkedPayload = { knock: Vector3 }
 export type TrappedPayload = { seconds: number }
@@ -65,6 +66,31 @@ export type StealAlertPayload = {
 	name: string,
 }
 export type GuardianAlertPayload = { zone: number, guardianId: string }
+
+-- Wave 4 (event dunia). Waktu dikirim sebagai SISA DETIK (klien tidak bisa membandingkan Clock.now server).
+export type AnnounceSegment = { text: string, color: { number }? } -- color = {r,g,b} 0..255
+export type AnnouncePayload = { segments: { AnnounceSegment } }
+export type DayNightPayload = { state: "Day" | "Night", remaining: number }
+export type EggResetPayload = { remaining: number }
+export type RacePodiumRow = { userId: number, name: string, timeSeconds: number, trophies: number }
+export type RaceStatePayload = {
+	phase: "Idle" | "Countdown" | "Open" | "Closed",
+	remaining: number, -- detik sampai fase berikutnya
+	zone: number?,
+	zoneName: string?,
+	myBest: number?, -- waktu terbaik pemain pada race ini
+	podium: { RacePodiumRow }?, -- terisi saat phase == "Closed"
+}
+export type StarwhaleStatePayload = {
+	phase: "Idle" | "Sighted" | "Found" | "Done",
+	remaining: number, -- sisa waktu paus di dunia
+	zone: number?,
+	oddEggs: number?, -- ditemukan
+	oddEggsTotal: number?,
+	stardust: number?,
+	relayFixed: boolean?,
+	target: { number }?, -- posisi paus {x,y,z} (hanya untuk pemain yang memegang Star Compass)
+}
 
 export type NotifyKind = "info" | "error" | "success" | "admin"
 
@@ -96,6 +122,10 @@ Types.Attr = {
 	GuardianState = "GuardianState", -- Sleep | Alert | Chase | Return
 	TrapOwner = "TrapOwner",
 	Carried = "Carried", -- Model telur placed yang sedang dibawa pencuri
+	RaceId = "RaceId",
+	GateIndex = "GateIndex", -- urutan gerbang/checkpoint race (0 = start, n+1 = finish)
+	PodHp = "PodHp", -- sisa pukulan pod Stardust
+	OddEgg = "OddEgg", -- telur aneh Starwhale (dirender klien; server memvalidasi jarak)
 	PenLevel = "PenLevel", -- Plot: level pen (visual pagar)
 	WheelGain = "WheelGain", -- Model roda: speed per step saat ini
 	WheelLevel = "WheelLevel",
@@ -112,6 +142,9 @@ Types.Tags = {
 	Guardian = "NB_Guardian",
 	Trap = "NB_Trap",
 	Shield = "NB_Shield",
+	RaceGate = "NB_RaceGate",
+	Starwhale = "NB_Starwhale",
+	StardustPod = "NB_StardustPod",
 }
 
 -- Nama folder/Instance penting di Workspace dan ReplicatedStorage.

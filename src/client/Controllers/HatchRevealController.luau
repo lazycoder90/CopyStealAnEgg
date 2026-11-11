@@ -363,6 +363,7 @@ end
 
 function HatchRevealController.Start()
 	Net.connect("HatchReveal", onReveal)
+	Net.connect("FuseResult", onReveal) -- payload sama + upgraded/prism
 end
 
 return HatchRevealController

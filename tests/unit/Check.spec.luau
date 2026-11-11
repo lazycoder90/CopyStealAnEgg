@@ -59,4 +59,15 @@ return function(t)
 	t.eq(list({ "bad id!" }), false, "uidList isi tidak valid")
 	t.eq(list("abc"), false, "uidList bukan tabel")
 	t.eq(list({ 1, 2 }), false, "uidList isi bukan string")
+
+	-- intGrid
+	local grid = Check.intGrid(2, 3, 0, 3)
+	t.eq(grid({ { 0, 1, 2 }, { 3, 0, 1 } }), true, "intGrid valid")
+	t.eq(grid({ { 0, 1, 2 } }), false, "intGrid baris kurang")
+	t.eq(grid({ { 0, 1 }, { 3, 0 } }), false, "intGrid kolom kurang")
+	t.eq(grid({ { 0, 1, 4 }, { 3, 0, 1 } }), false, "intGrid di luar rentang")
+	t.eq(grid({ { 0, 1, 1.5 }, { 3, 0, 1 } }), false, "intGrid bukan bilangan bulat")
+	t.eq(grid({ { 0, 1, 2 }, { 3, 0, 1 }, { 1, 1, 1 } }), false, "intGrid baris berlebih")
+	t.eq(grid({ { 0, 1, 2 }, "x" }), false, "intGrid baris bukan tabel")
+	t.eq(grid(nil), false, "intGrid nil")
 end
