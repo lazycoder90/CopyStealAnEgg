@@ -50,6 +50,15 @@ local function block(
 	}, parent)
 end
 
+-- Lantai hub dan Coop: hijau limau berpola kotak (permukaan Studs hanya tampil pada material Plastic).
+local FLOOR_COLOR = Color3.fromRGB(150, 225, 40)
+
+local function studFloor(part: BasePart)
+	part.Material = Enum.Material.Plastic
+	part.TopSurface = Enum.SurfaceType.Studs
+	return part
+end
+
 local function sign(
 	parent: BasePart,
 	text: string,
@@ -99,10 +108,10 @@ local function buildHub(map: Folder)
 		Vector3.new(width, 2, depth),
 		-- Atas di y=-0.12 (bukan 0) agar tidak sebidang dengan lantai Coop (z-fighting/kedip).
 		Vector3.new(0, -1.12, centerZ),
-		Color3.fromRGB(122, 200, 96),
-		Enum.Material.Grass
+		FLOOR_COLOR
 	)
 	floor.Name = "HubFloor"
+	studFloor(floor)
 
 	-- Dinding hub (mencegah jatuh ke samping/belakang).
 	local wallColor = Color3.fromRGB(86, 140, 70)
@@ -161,7 +170,7 @@ local function buildHub(map: Folder)
 		"SafeZoneLabel",
 		Vector3.new(120, 0.2, 22),
 		Vector3.new(0, 0.1, Layout.hearthLineZ - 18),
-		Color3.fromRGB(122, 200, 96)
+		FLOOR_COLOR
 	)
 	label.CanCollide = false
 	label.Transparency = 1
@@ -223,8 +232,9 @@ local function buildPlots()
 			Names.PlotFloor,
 			Vector3.new(size, 1, size),
 			Vector3.new(cx, -0.5, cz),
-			Color3.fromRGB(218, 198, 158)
+			FLOOR_COLOR
 		)
+		studFloor(floor)
 		model.PrimaryPart = floor
 
 		-- Pagar: 3 sisi penuh, sisi lane (+Z) punya celah gerbang di tengah.
