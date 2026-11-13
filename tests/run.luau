@@ -9,6 +9,7 @@ local specs = {
 	{ "Check", require("./unit/Check.spec") },
 	{ "Maid", require("./unit/Maid.spec") },
 	{ "Creatures", require("./unit/Creatures.spec") },
+	{ "HaloJelly", require("./unit/HaloJelly.spec") },
 	{ "Progression", require("./unit/Progression.spec") },
 	{ "WeightRoll", require("./unit/WeightRoll.spec") },
 	{ "MutationLogic", require("./unit/MutationLogic.spec") },

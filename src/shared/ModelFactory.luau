@@ -124,6 +124,66 @@ function ModelFactory.setEggScale(model: Model, scale: number)
 	end
 end
 
+-- Model khusus dari kubus Blockbench (lihat tools/import_bbmodel.luau). id makhluk -> data kubus.
+local CUSTOM_MODELS = {
+	halo_jelly = require(script.Parent.Models.HaloJellyData),
+}
+local CUSTOM_HEIGHT = 2.4 -- tinggi model dalam satuan s (sama dengan skala makhluk placeholder)
+
+local function bbExtents(data)
+	local lo, hi = { math.huge, math.huge, math.huge }, { -math.huge, -math.huge, -math.huge }
+	for _, c in data.cubes do
+		for axis = 1, 3 do
+			lo[axis] = math.min(lo[axis], c[axis])
+			hi[axis] = math.max(hi[axis], c[axis + 3])
+		end
+	end
+	return lo, hi
+end
+
+-- Membangun makhluk dari kubus. Hanya putih yang ikut warna mutasi; emas tetap. Semua Anchored.
+local function makeCustomCreature(model: Model, data, s: number, tint: Color3?)
+	local lo, hi = bbExtents(data)
+	local center = Vector3.new((lo[1] + hi[1]) / 2, (lo[2] + hi[2]) / 2, (lo[3] + hi[3]) / 2)
+	local k = CUSTOM_HEIGHT * s / (hi[2] - lo[2]) -- stud per pixel
+	local body = newPart(
+		model,
+		"Body",
+		Vector3.new(hi[1] - lo[1], hi[2] - lo[2], hi[3] - lo[3]) * k,
+		Color3.new(1, 1, 1),
+		{ Transparency = 1 }
+	)
+	model.PrimaryPart = body
+	local root = body.CFrame
+	for _, c in data.cubes do
+		local base = data.palette[c[13]]
+		local color = Color3.fromRGB(base[1], base[2], base[3])
+		if tint and c[13] <= 2 then
+			color = color:Lerp(tint, 0.45)
+		end
+		local from = Vector3.new(c[1], c[2], c[3])
+		local to = Vector3.new(c[4], c[5], c[6])
+		local origin = Vector3.new(c[7], c[8], c[9]) - center
+		local mid = (from + to) / 2 - center
+		local cf = root
+			* CFrame.new(origin * k)
+			* CFrame.Angles(math.rad(c[10]), math.rad(c[11]), math.rad(c[12]))
+			* CFrame.new((mid - origin) * k)
+		-- Kubus pipih (tebal 0 di Blockbench) diberi tebal minimum agar tetap terlihat.
+		local size = (to - from) * k
+		size = Vector3.new(math.max(size.X, 0.05), math.max(size.Y, 0.05), math.max(size.Z, 0.05))
+		newPart(model, if c[14] then "Glow" else "Cube", size, color, {
+			CFrame = cf,
+			Material = if c[14] then Enum.Material.Neon else Enum.Material.SmoothPlastic,
+		})
+	end
+	local light = Instance.new("PointLight")
+	light.Color = Color3.fromRGB(255, 214, 90)
+	light.Range = 10
+	light.Brightness = 0.8
+	light.Parent = body
+end
+
 -- Makhluk/pet: badan + kepala + mata + telinga + ekor. Semua Anchored (digerakkan lewat PivotTo).
 function ModelFactory.makeCreature(creature, kg: number, muts: { string }?): Model
 	local model = Instance.new("Model")
@@ -135,6 +195,14 @@ function ModelFactory.makeCreature(creature, kg: number, muts: { string }?): Mod
 		color = color:Lerp(MUTATION_TINT[muts[1]], 0.45)
 	end
 	local dark = Color3.new(color.R * 0.55, color.G * 0.55, color.B * 0.55)
+
+	local custom = CUSTOM_MODELS[creature.id]
+	if custom then
+		local tint = if muts and #muts > 0 then MUTATION_TINT[muts[1]] else nil
+		makeCustomCreature(model, custom, s, tint)
+		model.PrimaryPart:SetAttribute(Attr.Rarity, creature.rarity)
+		return model
+	end
 
 	local body = newPart(model, "Body", Vector3.new(s * 1.2, s * 0.9, s * 1.7), color)
 	model.PrimaryPart = body

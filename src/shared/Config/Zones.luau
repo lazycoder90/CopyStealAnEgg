@@ -39,7 +39,7 @@ Zones.list = {
 			"Moss Pup",
 			"Clover Bunny",
 			"Puddle Duckling",
-			"Acorn Squirrel",
+			"Halo Jelly",
 			"Bramble Fox",
 			"Thistle Stag",
 			"Sunpetal Griffin",

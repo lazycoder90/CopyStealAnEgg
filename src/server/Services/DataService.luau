@@ -12,6 +12,7 @@ local RunService = game:GetService("RunService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Constants = require(Shared.Config.Constants)
+local Creatures = require(Shared.Config.Creatures)
 local Template = require(Shared.Config.ProfileTemplate)
 local Signal = require(Shared.Util.Signal)
 
@@ -130,6 +131,7 @@ local function startSession(player: Player)
 
 	profile:AddUserId(userId)
 	profile:Reconcile()
+	Creatures.migrateProfile(profile.Data)
 
 	if player.Parent ~= Players then
 		profile:EndSession()

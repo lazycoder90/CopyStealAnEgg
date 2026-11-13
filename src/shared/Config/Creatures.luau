@@ -58,6 +58,36 @@ for _, zone in Zones.list do
 	end
 end
 
+-- Id lama -> id baru (profil yang tersimpan sebelum makhluk diganti nama/diganti).
+Creatures.aliases = { acorn_squirrel = "halo_jelly" } :: { [string]: string }
+
+-- Mengganti id lama pada data profil (telur, pet, Index). Mengembalikan jumlah penggantian.
+function Creatures.migrateProfile(data): number
+	local changed = 0
+	for old, new in Creatures.aliases do
+		for _, group in { data.eggs, data.pets } do
+			for _, item in group or {} do
+				if item.id == old then
+					item.id = new
+					changed += 1
+				end
+			end
+		end
+		local index = data.index
+		if index then
+			for _, key in { "found", "claimed" } do
+				local set = index[key]
+				if set and set[old] ~= nil then
+					set[new] = set[new] or set[old]
+					set[old] = nil
+					changed += 1
+				end
+			end
+		end
+	end
+	return changed
+end
+
 Creatures.list = list
 Creatures.byId = byId
 Creatures.byZone = byZone
