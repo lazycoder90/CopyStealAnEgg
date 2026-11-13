@@ -95,7 +95,7 @@ local function buildWheel(plot: Model)
 	part(model, "Hub", {
 		Shape = Enum.PartType.Cylinder,
 		Size = Vector3.new(0.7, 6, 6),
-		CFrame = CFrame.new(center + Vector3.new(0, 0.32, 0)) * CFrame.Angles(0, 0, math.rad(90)),
+		CFrame = CFrame.new(center + Vector3.new(0, 0.42, 0)) * CFrame.Angles(0, 0, math.rad(90)),
 		Color = Color3.fromRGB(255, 190, 40),
 		Material = Enum.Material.SmoothPlastic,
 		CanCollide = false,

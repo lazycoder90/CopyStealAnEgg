@@ -97,7 +97,8 @@ local function buildHub(map: Folder)
 		map,
 		"HubFloor",
 		Vector3.new(width, 2, depth),
-		Vector3.new(0, -1, centerZ),
+		-- Atas di y=-0.12 (bukan 0) agar tidak sebidang dengan lantai Coop (z-fighting/kedip).
+		Vector3.new(0, -1.12, centerZ),
 		Color3.fromRGB(122, 200, 96),
 		Enum.Material.Grass
 	)
@@ -222,7 +223,7 @@ local function buildPlots()
 			Names.PlotFloor,
 			Vector3.new(size, 1, size),
 			Vector3.new(cx, -0.5, cz),
-			Color3.fromRGB(232, 214, 176)
+			Color3.fromRGB(218, 198, 158)
 		)
 		model.PrimaryPart = floor
 
@@ -239,15 +240,15 @@ local function buildPlots()
 		block(
 			model,
 			"FenceW",
-			Vector3.new(1, fenceH, size),
-			Vector3.new(cx - half, fenceH / 2, cz),
+			Vector3.new(1, fenceH, size - 1),
+			Vector3.new(cx - half, fenceH / 2, cz + 0.5),
 			fenceColor
 		)
 		block(
 			model,
 			"FenceE",
-			Vector3.new(1, fenceH, size),
-			Vector3.new(cx + half, fenceH / 2, cz),
+			Vector3.new(1, fenceH, size - 1),
+			Vector3.new(cx + half, fenceH / 2, cz + 0.5),
 			fenceColor
 		)
 		local seg = (size - gate) / 2
