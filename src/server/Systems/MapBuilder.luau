@@ -51,7 +51,7 @@ local function block(
 end
 
 -- Lantai hub dan Coop: hijau limau berpola kotak (permukaan Studs hanya tampil pada material Plastic).
-local FLOOR_COLOR = Color3.fromRGB(150, 225, 40)
+local FLOOR_COLOR = Color3.fromRGB(98, 158, 48)
 
 local function studFloor(part: BasePart)
 	part.Material = Enum.Material.Plastic
